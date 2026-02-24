@@ -75,9 +75,9 @@ ext-session-replay:
 ext-theme-cycler:
     pi -e extensions/theme-cycler.ts -e extensions/minimal.ts
 
-# 17. Input sound: play a chime when the agent needs your input
+# 17. Input sound: play a jobs done sound when the agent needs your input
 ext-input-sound:
-    pi -e extensions/input-sound.ts -e extensions/theme-cycler.ts
+    pi -e extensions/input-sound.ts
 
 # utils
 
