@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>RideGo</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #0D0F14;
+    --bg-surface: #1A1D26;
+    --bg-surface-raised: #242834;
+    --bg-surface-border: #2E3340;
+    --text-primary: #F0F1F4;
+    --text-secondary: #8B90A0;
+    --text-muted: #7A8099;
+    --accent: #00D26A;
+    --accent-hover: #00B85C;
+    --accent-soft: rgba(0,210,106,0.12);
+    --warning: #FFB830;
+    --danger: #FF4757;
+    --blue: #3B82F6;
+    --radius-card: 12px;
+    --radius-sheet: 20px;
+    --radius-button: 24px;
+  }
+
+  html, body {
+    height: 100%;
+    background: #000;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Phone Frame */
+  .phone-frame {
+    width: 390px;
+    height: 844px;
+    background: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+    border-radius: 44px;
+    box-shadow: 0 0 0 4px #1A1D26, 0 0 0 6px #000, 0 24px 80px rgba(0,0,0,0.6);
+  }
+
+  @media (max-width: 430px) {
+    .phone-frame {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+
+  /* Status Bar */
+  .status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 28px 0;
+    z-index: 100;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .status-bar-time { letter-spacing: 0.5px; }
+  .status-bar-icons { display: flex; align-items: center; gap: 6px; }
+  .status-bar-icons svg { width: 18px; height: 18px; fill: var(--text-primary); }
+
+  /* Screens */
+  .screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    transform: translateX(30px);
+    will-change: transform, opacity;
+  }
+  .screen.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+    z-index: 10;
+  }
+  .screen.slide-out-left {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  .screen.slide-in-right {
+    transform: translateX(30px);
+  }
+
+  /* Back Navigation Animations */
+  @keyframes slideInFromLeft {
+    from { transform: translateX(-30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOutToRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(30px); opacity: 0; }
+  }
+  .screen.anim-back-in {
+    animation: slideInFromLeft 0.35s ease forwards;
+  }
+  .screen.anim-back-out {
+    animation: slideOutToRight 0.35s ease forwards;
+  }
+
+  /* Map Background */
+  .map-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-primary);
+    background-image:
+      linear-gradient(rgba(42,48,66,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42,48,66,0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .map-road {
+    position: absolute;
+    background: rgba(42,48,66,0.5);
+    border-radius: 2px;
+  }
+  .road-h1 { top: 30%; left: 0; right: 0; height: 3px; }
+  .road-h2 { top: 55%; left: 0; right: 0; height: 3px; }
+  .road-v1 { left: 25%; top: 0; bottom: 0; width: 3px; }
+  .road-v2 { left: 60%; top: 0; bottom: 0; width: 3px; }
+  .road-v3 { left: 80%; top: 0; bottom: 0; width: 3px; }
+  .road-h3 { top: 75%; left: 0; right: 40%; height: 3px; }
+
+  /* Location Dot */
+  .location-dot {
+    position: absolute;
+    z-index: 5;
+  }
+  .location-dot .dot {
+    width: 16px;
+    height: 16px;
+    background: var(--blue);
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 8px rgba(59,130,246,0.5);
+    position: relative;
+    z-index: 2;
+  }
+  .location-dot .ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(59,130,246,0.15);
+    border-radius: 50%;
+    animation: pulse-ring 2s ease-out infinite;
+  }
+  @keyframes pulse-ring {
+    0% { transform: translate(-50%,-50%) scale(0.8); opacity: 1; }
+    100% { transform: translate(-50%,-50%) scale(1.6); opacity: 0; }
+  }
+
+  /* Route Markers */
+  .route-marker {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .route-marker .marker-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .route-marker .marker-label {
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--bg-surface);
+    padding: 2px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    color: var(--text-secondary);
+  }
+  .marker-green .marker-dot { background: var(--accent); }
+  .marker-red .marker-dot { background: var(--danger); }
+
+  /* Animated Route Line */
+  .route-line {
+    position: absolute;
+    z-index: 3;
+  }
+  .route-line svg { width: 100%; height: 100%; }
+  .route-line .route-path {
+    stroke: var(--blue);
+    stroke-width: 3;
+    stroke-dasharray: 8 6;
+    fill: none;
+    animation: dash-move 1s linear infinite;
+  }
+  @keyframes dash-move {
+    to { stroke-dashoffset: -28; }
+  }
+
+  /* Bottom Sheet */
+  .bottom-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+    padding: 12px 20px 20px;
+    z-index: 20;
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--bg-surface-border);
+    border-radius: 4px;
+    margin: 0 auto 16px;
+  }
+
+  /* Bottom Nav */
+  .bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--bg-surface-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-bottom: 14px;
+    z-index: 30;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    padding: 6px 12px;
+    min-width: 56px;
+  }
+  .nav-item svg { width: 24px; height: 24px; }
+  .nav-item .nav-label { font-size: 11px; font-weight: 500; color: var(--text-muted); }
+  .nav-item.active svg { color: var(--accent); fill: var(--accent); }
+  .nav-item.active .nav-label { color: var(--accent); }
+
+  /* Buttons */
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: #003C1E;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 52px;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-outline {
+    padding: 12px 20px;
+    background: transparent;
+    border: 1.5px solid var(--bg-surface-border);
+    border-radius: var(--radius-button);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-outline:hover { background: var(--bg-surface-raised); border-color: var(--text-muted); }
+  .btn-outline:active { transform: scale(0.98); }
+
+  .btn-danger-outline {
+    padding: 14px;
+    background: transparent;
+    border: 1.5px solid var(--danger);
+    border-radius: var(--radius-button);
+    color: var(--danger);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 48px;
+  }
+  .btn-danger-outline:hover { background: rgba(255,71,87,0.08); }
+
+  .btn-text-danger {
+    background: none;
+    border: none;
+    color: var(--danger);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 10px;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.2s;
+  }
+  .btn-text-danger:hover { opacity: 0.8; }
+
+  /* Search Bar */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-surface-raised);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    min-height: 52px;
+  }
+  .search-bar:hover { background: var(--bg-surface-border); }
+  .search-bar svg { width: 20px; height: 20px; color: var(--text-muted); flex-shrink: 0; }
+  .search-bar span { color: var(--text-muted); font-size: 16px; }
+
+  /* Quick Chips */
+  .chips-row {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 4px 0;
+  }
+  .chips-row::-webkit-scrollbar { display: none; }
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--bg-surface-raised);
+    border-radius: 24px;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
+  }
+  .chip:hover { background: var(--bg-surface-border); }
+  .chip-emoji { font-size: 16px; }
+
+  /* Place List */
+  .place-list { list-style: none; }
+  .place-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 4px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 54px;
+  }
+  .place-item:hover { background: var(--bg-surface-raised); }
+  .place-item:active { background: var(--bg-surface-border); }
+  .place-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--bg-surface-raised);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .place-icon svg { width: 18px; height: 18px; color: var(--text-secondary); }
+  .place-info { flex: 1; min-width: 0; }
+  .place-name { font-size: 15px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .place-address { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+
+  /* Ride Option Card */
+  .ride-options { display: flex; flex-direction: column; gap: 8px; }
+  .ride-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-surface-raised);
+    border-radius: var(--radius-card);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    border: 2px solid transparent;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 68px;
+    border-left: 4px solid transparent;
+  }
+  .ride-option.selected {
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+  }
+  .ride-option:hover:not(.selected) { background: var(--bg-surface-border); }
+  .ride-icon { font-size: 28px; flex-shrink: 0; width: 40px; text-align: center; }
+  .ride-info { flex: 1; }
+  .ride-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+  .ride-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .ride-meta { text-align: right; flex-shrink: 0; }
+  .ride-eta { font-size: 12px; color: var(--text-secondary); }
+  .ride-price { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
+
+  /* Payment Row */
+  .payment-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 48px;
+  }
+  .payment-row svg { width: 20px; height: 20px; color: var(--text-secondary); }
+  .payment-row span { flex: 1; font-size: 14px; color: var(--text-primary); }
+  .payment-chevron { color: var(--text-muted) !important; }
+
+  /* Driver Card */
+  .driver-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: var(--bg-surface-raised);
+    border-radius: var(--radius-card);
+  }
+  .driver-avatar {
+    width: 52px;
+    height: 52px;
+    background: var(--accent-soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .driver-info { flex: 1; }
+  .driver-name { font-size: 16px; font-weight: 700; }
+  .driver-rating { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .driver-car { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+  /* Action Buttons Row */
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .action-row .btn-outline { flex: 1; }
+
+  /* Trip Timeline */
+  .trip-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 12px 0;
+  }
+  .timeline-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .timeline-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 14px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .tl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .tl-dot-green { background: var(--accent); }
+  .tl-dot-red { background: var(--danger); }
+  .tl-line {
+    width: 2px;
+    height: 28px;
+    background: var(--bg-surface-border);
+    margin: 4px 0;
+    flex-shrink: 0;
+  }
+  .tl-dashed {
+    border-left: 2px dashed var(--bg-surface-border);
+    height: 28px;
+    margin: 4px 0;
+  }
+  .timeline-text .tl-label { font-size: 12px; color: var(--text-muted); }
+  .timeline-text .tl-value { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-top: 1px; }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--bg-surface-border);
+    margin: 12px 0;
+  }
+
+  /* Screen 2 — Search */
+  .search-screen {
+    background: var(--bg-surface);
+    padding-top: 54px;
+  }
+  .search-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+  }
+  .back-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-surface-raised);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s;
+  }
+  .back-btn:hover { background: var(--bg-surface-border); }
+  .back-btn svg { width: 20px; height: 20px; color: var(--text-primary); }
+
+  .search-inputs {
+    flex: 1;
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+  .search-timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 0;
+    width: 20px;
+    flex-shrink: 0;
+  }
+  .search-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .search-dot-green { background: var(--accent); }
+  .search-dot-red { background: var(--danger); }
+  .search-dash {
+    width: 2px;
+    flex: 1;
+    border-left: 2px dashed var(--bg-surface-border);
+    margin: 4px 0;
+  }
+  .search-fields {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .search-field {
+    background: var(--bg-surface-raised);
+    border-radius: 10px;
+    padding: 14px 14px;
+    font-size: 15px;
+    color: var(--text-primary);
+    border: none;
+    outline: none;
+    font-family: inherit;
+    width: 100%;
+    transition: background 0.2s;
+    min-height: 48px;
+  }
+  .search-field::placeholder { color: var(--text-muted); }
+  .search-field:focus { background: var(--bg-surface-border); }
+  .search-field-static {
+    background: var(--bg-surface-raised);
+    border-radius: 10px;
+    padding: 14px 14px;
+    font-size: 15px;
+    color: var(--accent);
+    font-weight: 500;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-results {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 20px;
+  }
+  .search-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 16px 0 8px;
+  }
+
+  /* Screen 4 — Matching */
+  .matching-content {
+    text-align: center;
+    padding: 20px;
+  }
+  .matching-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  .matching-spinner {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--bg-surface-border);
+    border-top-color: var(--accent);
+    animation: spin 1s linear infinite;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .matching-spinner::after {
+    content: '🚗';
+    font-size: 28px;
+    position: absolute;
+    animation: spin-reverse 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes spin-reverse { to { transform: rotate(-360deg); } }
+  .matching-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 20px 0 28px;
+  }
+
+  /* Screen 5 — Arriving Card */
+  .arriving-card {
+    position: absolute;
+    top: 62px;
+    left: 20px;
+    right: 20px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-card);
+    padding: 14px 18px;
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .arriving-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .arriving-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .arriving-countdown {
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Screen 5 - complete trip button */
+  .demo-complete-btn {
+    background: var(--accent-soft);
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    border-radius: var(--radius-button);
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    width: 100%;
+    margin-top: 8px;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .demo-complete-btn:hover { background: rgba(0,210,106,0.2); }
+
+  .share-trip-btn {
+    background: none;
+    border: none;
+    color: var(--blue);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 0;
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+    width: 100%;
+    font-family: inherit;
+  }
+
+  /* Screen 6 — Trip Complete */
+  .trip-complete-screen {
+    background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-surface) 100%);
+    padding: 54px 20px 20px;
+    overflow-y: auto;
+  }
+  .complete-header {
+    text-align: center;
+    padding: 30px 0 24px;
+  }
+  .complete-check {
+    width: 64px;
+    height: 64px;
+    background: var(--accent-soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .complete-check svg { width: 32px; height: 32px; color: var(--accent); }
+  .complete-header h2 { font-size: 22px; font-weight: 700; }
+
+  .fare-card {
+    background: var(--bg-surface-raised);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .fare-route {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+  }
+  .fare-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .fare-total {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .fare-total-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .rating-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .rating-section h4 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .stars {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .star-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s;
+    font-size: 0;
+  }
+  .star-btn:active { transform: scale(1.2); }
+  .star-btn svg { width: 36px; height: 36px; }
+  .star-btn .star-empty { color: var(--text-muted); }
+  .star-btn .star-filled { color: var(--warning); display: none; }
+  .star-btn.active .star-empty { display: none; }
+  .star-btn.active .star-filled { display: block; }
+
+  .tip-section {
+    margin-bottom: 16px;
+  }
+  .tip-section h4 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--text-secondary); }
+  .tip-row {
+    display: flex;
+    gap: 8px;
+  }
+  .tip-btn {
+    flex: 1;
+    padding: 10px 4px;
+    background: var(--bg-surface-raised);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s, border-color 0.2s;
+    text-align: center;
+    min-height: 44px;
+    font-family: inherit;
+  }
+  .tip-btn:hover { background: var(--bg-surface-border); }
+  .tip-btn.active { border-color: var(--accent); background: var(--accent-soft); }
+
+  .comment-box {
+    width: 100%;
+    background: var(--bg-surface-raised);
+    border: none;
+    border-radius: var(--radius-card);
+    padding: 14px;
+    font-size: 14px;
+    color: var(--text-primary);
+    resize: none;
+    font-family: inherit;
+    outline: none;
+    margin-bottom: 16px;
+    min-height: 60px;
+    transition: background 0.2s;
+  }
+  .comment-box::placeholder { color: var(--text-muted); }
+  .comment-box:focus { background: var(--bg-surface-border); }
+
+  /* Seat Selector */
+  .seat-selector {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    margin-bottom: 8px;
+  }
+  .seat-selector-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .seat-selector-label svg {
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary);
+  }
+  .seat-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+  .seat-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-surface-raised);
+    border: 1.5px solid var(--bg-surface-border);
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  .seat-btn:hover:not(:disabled) { background: var(--bg-surface-border); border-color: var(--text-muted); }
+  .seat-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .seat-count {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 24px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .seat-badge {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* Promo Link */
+  .promo-link {
+    text-align: center;
+    padding: 6px 0;
+  }
+  .promo-link a {
+    font-size: 13px;
+    color: var(--blue);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  /* Scrollable sheet content */
+  .sheet-scroll {
+    overflow-y: auto;
+    max-height: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Utility */
+  .mt-12 { margin-top: 12px; }
+  .mt-16 { margin-top: 16px; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-12 { margin-bottom: 12px; }
+  .mb-16 { margin-bottom: 16px; }
+  .gap-10 { gap: 10px; }
+</style>
+</head>
+<body>
+<div class="phone-frame" id="app">
+
+  <!-- Status Bar -->
+  <div class="status-bar" id="status-bar">
+    <span class="status-bar-time" id="status-time">9:41</span>
+    <div class="status-bar-icons">
+      <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN 1: HOME ==================== -->
+  <div class="screen active" id="screen-home">
+    <div class="map-bg">
+      <div class="map-road road-h1"></div>
+      <div class="map-road road-h2"></div>
+      <div class="map-road road-v1"></div>
+      <div class="map-road road-v2"></div>
+      <div class="map-road road-v3"></div>
+      <div class="map-road road-h3"></div>
+      <div class="location-dot" style="top:38%;left:50%;transform:translate(-50%,-50%)">
+        <div class="ring"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+    <div class="bottom-sheet" style="height:48%;padding-bottom:80px;">
+      <div class="sheet-handle"></div>
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;" id="greeting">Good evening, Alex 👋</h2>
+      <div class="search-bar mb-16" id="home-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Where to?</span>
+      </div>
+      <div class="chips-row mb-16">
+        <div class="chip"><span class="chip-emoji">🏠</span> Home</div>
+        <div class="chip"><span class="chip-emoji">💼</span> Work</div>
+        <div class="chip"><span class="chip-emoji">✈️</span> Airport</div>
+      </div>
+      <div>
+        <ul class="place-list">
+          <li class="place-item">
+            <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="place-info">
+              <div class="place-name">Aker Brygge</div>
+              <div class="place-address">Brynjulf Bulls plass 6, Oslo</div>
+            </div>
+          </li>
+          <li class="place-item">
+            <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="place-info">
+              <div class="place-name">Oslo Sentralstasjon</div>
+              <div class="place-address">Jernbanetorget 1, Oslo</div>
+            </div>
+          </li>
+          <li class="place-item">
+            <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="place-info">
+              <div class="place-name">Grünerløkka</div>
+              <div class="place-address">Thorvald Meyers gate, Oslo</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="nav-label">Home</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="nav-label">Activity</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="nav-label">Account</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span class="nav-label">Help</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN 2: SEARCH ==================== -->
+  <div class="screen search-screen" id="screen-search">
+    <div class="search-header">
+      <button class="back-btn" id="search-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <div class="search-inputs">
+        <div class="search-timeline">
+          <div class="search-dot search-dot-green"></div>
+          <div class="search-dash"></div>
+          <div class="search-dot search-dot-red"></div>
+        </div>
+        <div class="search-fields">
+          <div class="search-field-static">Current Location</div>
+          <input class="search-field" id="dest-input" type="text" placeholder="Enter destination" autofocus>
+        </div>
+      </div>
+    </div>
+    <div class="search-results" id="search-results">
+      <div class="search-section-title">Recent</div>
+      <ul class="place-list" id="recent-list">
+        <li class="place-item suggestion-item" data-name="Aker Brygge">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Aker Brygge</div>
+            <div class="place-address">Brynjulf Bulls plass 6, Oslo</div>
+          </div>
+        </li>
+        <li class="place-item suggestion-item" data-name="Oslo Sentralstasjon">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Oslo Sentralstasjon</div>
+            <div class="place-address">Jernbanetorget 1, Oslo</div>
+          </div>
+        </li>
+        <li class="place-item suggestion-item" data-name="Grünerløkka">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Grünerløkka</div>
+            <div class="place-address">Thorvald Meyers gate, Oslo</div>
+          </div>
+        </li>
+      </ul>
+      <div class="search-section-title">Suggestions</div>
+      <ul class="place-list" id="suggestions-list">
+        <li class="place-item suggestion-item" data-name="Aker Brygge">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Aker Brygge</div>
+            <div class="place-address">Brynjulf Bulls plass 6, Oslo</div>
+          </div>
+        </li>
+        <li class="place-item suggestion-item" data-name="Nationaltheatret">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Nationaltheatret</div>
+            <div class="place-address">Johanne Dybwads plass 1, Oslo</div>
+          </div>
+        </li>
+        <li class="place-item suggestion-item" data-name="Oslo Lufthavn">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Oslo Lufthavn</div>
+            <div class="place-address">Edvard Munchs veg, Gardermoen</div>
+          </div>
+        </li>
+        <li class="place-item suggestion-item" data-name="Vigeland Sculpture Park">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Vigeland Sculpture Park</div>
+            <div class="place-address">Nobels gate 32, Oslo</div>
+          </div>
+        </li>
+        <li class="place-item suggestion-item" data-name="Holmenkollen">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Holmenkollen</div>
+            <div class="place-address">Kongeveien 5, Oslo</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN 3: RIDE OPTIONS ==================== -->
+  <div class="screen" id="screen-ride-options">
+    <div class="map-bg">
+      <div class="map-road road-h1"></div>
+      <div class="map-road road-h2"></div>
+      <div class="map-road road-v1"></div>
+      <div class="map-road road-v2"></div>
+      <div class="map-road road-v3"></div>
+      <div class="map-road road-h3"></div>
+
+      <!-- Pickup marker -->
+      <div class="route-marker marker-green" style="top:26%;left:28%">
+        <div class="marker-dot"></div>
+        <div class="marker-label">Nydalen</div>
+      </div>
+      <!-- Destination marker -->
+      <div class="route-marker marker-red" style="top:42%;left:68%">
+        <div class="marker-dot"></div>
+        <div class="marker-label" id="dest-marker-label">Aker Brygge</div>
+      </div>
+      <!-- Route line -->
+      <div class="route-line" style="top:24%;left:26%;width:48%;height:24%;">
+        <svg viewBox="0 0 200 100" preserveAspectRatio="none">
+          <path class="route-path" d="M10,15 C50,15 50,50 100,50 C150,50 150,80 190,80"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="bottom-sheet" style="height:60%;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-scroll">
+        <div class="seat-selector" id="seat-selector">
+          <div class="seat-selector-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            Seats needed
+          </div>
+          <div class="seat-controls">
+            <button class="seat-btn" id="seat-minus" disabled>−</button>
+            <span class="seat-count" id="seat-count">1</span>
+            <button class="seat-btn" id="seat-plus">+</button>
+          </div>
+        </div>
+
+        <div class="ride-options mb-16" id="ride-options">
+          <div class="ride-option selected" data-ride="economy" data-price="89" data-seats="4">
+            <div class="ride-icon">🚗</div>
+            <div class="ride-info">
+              <div class="ride-name">Economy</div>
+              <div class="ride-desc"><span class="seat-badge">4 seats</span> · Affordable rides</div>
+            </div>
+            <div class="ride-meta">
+              <div class="ride-eta">3 min</div>
+              <div class="ride-price">kr 89</div>
+            </div>
+          </div>
+          <div class="ride-option" data-ride="comfort" data-price="139" data-seats="4">
+            <div class="ride-icon">🚘</div>
+            <div class="ride-info">
+              <div class="ride-name">Comfort</div>
+              <div class="ride-desc"><span class="seat-badge">4 seats</span> · Top-rated drivers</div>
+            </div>
+            <div class="ride-meta">
+              <div class="ride-eta">5 min</div>
+              <div class="ride-price">kr 139</div>
+            </div>
+          </div>
+          <div class="ride-option" data-ride="xl" data-price="199" data-seats="7">
+            <div class="ride-icon">🚐</div>
+            <div class="ride-info">
+              <div class="ride-name">XL</div>
+              <div class="ride-desc"><span class="seat-badge">7 seats</span> · Vans for groups</div>
+            </div>
+            <div class="ride-meta">
+              <div class="ride-eta">8 min</div>
+              <div class="ride-price">kr 199</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-row" style="border-top:1px solid var(--bg-surface-border);border-bottom:1px solid var(--bg-surface-border);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          <span>Visa •••• 4242</span>
+          <svg class="payment-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+
+        <div class="promo-link mt-12 mb-12">
+          <a>Add promo code</a>
+        </div>
+
+        <button class="btn-primary" id="confirm-ride-btn">Confirm Economy — kr 89</button>
+
+        <div style="height:20px"></div>
+      </div>
+    </div>
+
+    <button class="back-btn" id="ride-back" style="position:absolute;top:62px;left:20px;z-index:15;box-shadow:0 2px 10px rgba(0,0,0,0.3);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+  </div>
+
+  <!-- ==================== SCREEN 4: DRIVER MATCHING ==================== -->
+  <div class="screen" id="screen-matching">
+    <div class="map-bg">
+      <div class="map-road road-h1"></div>
+      <div class="map-road road-h2"></div>
+      <div class="map-road road-v1"></div>
+      <div class="map-road road-v2"></div>
+      <div class="map-road road-v3"></div>
+      <div class="map-road road-h3"></div>
+      <div class="location-dot" style="top:38%;left:50%;transform:translate(-50%,-50%)">
+        <div class="ring"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+    <div class="bottom-sheet" style="height:44%;">
+      <div class="sheet-handle"></div>
+      <div class="matching-content">
+        <h3>Finding your ride...</h3>
+        <div class="matching-spinner"></div>
+        <div class="matching-sub">Searching nearby drivers...</div>
+        <button class="btn-danger-outline" id="cancel-matching">Cancel Ride</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN 5: TRIP CONFIRMED ==================== -->
+  <div class="screen" id="screen-trip">
+    <div class="map-bg">
+      <div class="map-road road-h1"></div>
+      <div class="map-road road-h2"></div>
+      <div class="map-road road-v1"></div>
+      <div class="map-road road-v2"></div>
+      <div class="map-road road-v3"></div>
+      <div class="map-road road-h3"></div>
+      <div class="route-marker marker-green" style="top:26%;left:28%">
+        <div class="marker-dot"></div>
+        <div class="marker-label">Nydalen</div>
+      </div>
+      <div class="route-marker marker-red" style="top:42%;left:68%">
+        <div class="marker-dot"></div>
+        <div class="marker-label" id="trip-dest-marker-label">Aker Brygge</div>
+      </div>
+      <div class="route-line" style="top:24%;left:26%;width:48%;height:24%;">
+        <svg viewBox="0 0 200 100" preserveAspectRatio="none">
+          <path class="route-path" d="M10,15 C50,15 50,50 100,50 C150,50 150,80 190,80"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="arriving-card">
+      <div class="arriving-dot"></div>
+      <span class="arriving-text" id="arriving-text">Arriving in 3 min</span>
+      <span class="arriving-countdown" id="arriving-countdown">3:00</span>
+    </div>
+
+    <div class="bottom-sheet" style="height:54%;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-scroll">
+        <div class="driver-card mb-16">
+          <div class="driver-avatar">M</div>
+          <div class="driver-info">
+            <div class="driver-name">Mohamed K.</div>
+            <div class="driver-rating">4.9 ⭐ · 847 trips</div>
+            <div class="driver-car">White Toyota Camry · ABC 123</div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-outline">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            Call
+          </button>
+          <button class="btn-outline">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            Message
+          </button>
+        </div>
+
+        <div class="trip-timeline">
+          <div class="timeline-point">
+            <div class="timeline-connector">
+              <div class="tl-dot tl-dot-green"></div>
+              <div class="tl-dashed"></div>
+            </div>
+            <div class="timeline-text">
+              <div class="tl-label">PICKUP</div>
+              <div class="tl-value">Nydalen T-banestasjon</div>
+            </div>
+          </div>
+          <div class="timeline-point">
+            <div class="timeline-connector">
+              <div class="tl-dot tl-dot-red"></div>
+            </div>
+            <div class="timeline-text">
+              <div class="tl-label">DROP-OFF</div>
+              <div class="tl-value" id="trip-dropoff">Aker Brygge</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <button class="btn-text-danger" id="cancel-trip" style="width:100%;text-align:center;">Cancel Ride</button>
+        <button class="share-trip-btn">📍 Share trip status</button>
+
+        <div class="divider"></div>
+
+        <button class="demo-complete-btn" id="complete-trip-btn">▶ Complete Trip (Demo)</button>
+
+        <div style="height:20px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN 6: TRIP COMPLETE ==================== -->
+  <div class="screen trip-complete-screen" id="screen-complete">
+    <div class="complete-header">
+      <div class="complete-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Trip Complete ✓</h2>
+    </div>
+
+    <div class="fare-card">
+      <div class="fare-route" id="fare-route">Nydalen → Aker Brygge</div>
+      <div class="fare-row"><span>Base fare</span><span id="fare-base">kr 49</span></div>
+      <div class="fare-row"><span>Distance (4.2 km)</span><span id="fare-dist">kr 34</span></div>
+      <div class="fare-row"><span>Time (12 min)</span><span id="fare-time">kr 6</span></div>
+      <div class="divider"></div>
+      <div class="fare-row">
+        <span class="fare-total-label">Total</span>
+        <span class="fare-total" id="fare-total">kr 89</span>
+      </div>
+    </div>
+
+    <div class="rating-section">
+      <h4>Rate your ride</h4>
+      <div class="stars" id="stars">
+        <button class="star-btn" data-star="1">
+          <svg class="star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+        <button class="star-btn" data-star="2">
+          <svg class="star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+        <button class="star-btn" data-star="3">
+          <svg class="star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+        <button class="star-btn" data-star="4">
+          <svg class="star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+        <button class="star-btn" data-star="5">
+          <svg class="star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="tip-section">
+      <h4>Add a tip</h4>
+      <div class="tip-row" id="tip-row">
+        <button class="tip-btn active" data-tip="0">No tip</button>
+        <button class="tip-btn" data-tip="10">kr 10</button>
+        <button class="tip-btn" data-tip="20">kr 20</button>
+        <button class="tip-btn" data-tip="30">kr 30</button>
+      </div>
+    </div>
+
+    <textarea class="comment-box" placeholder="Additional comments..." rows="2"></textarea>
+
+    <button class="btn-primary" id="done-btn">Done</button>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ---- State ----
+  let currentScreen = 'home';
+  let selectedRide = { name: 'Economy', price: 89 };
+  let selectedDestination = 'Aker Brygge';
+  let requestedSeats = 1;
+  let matchingTimer = null;
+  let countdownTimer = null;
+  let countdownSeconds = 180;
+
+  // ---- DOM Refs ----
+  const screens = {
+    home: document.getElementById('screen-home'),
+    search: document.getElementById('screen-search'),
+    'ride-options': document.getElementById('screen-ride-options'),
+    matching: document.getElementById('screen-matching'),
+    trip: document.getElementById('screen-trip'),
+    complete: document.getElementById('screen-complete')
+  };
+
+  const $greeting = document.getElementById('greeting');
+  const $homeSearch = document.getElementById('home-search');
+  const $searchBack = document.getElementById('search-back');
+  const $destInput = document.getElementById('dest-input');
+  const $suggestionsList = document.getElementById('suggestions-list');
+  const $recentList = document.getElementById('recent-list');
+  const $rideOptions = document.getElementById('ride-options');
+  const $confirmBtn = document.getElementById('confirm-ride-btn');
+  const $rideBack = document.getElementById('ride-back');
+  const $cancelMatching = document.getElementById('cancel-matching');
+  const $completeTripBtn = document.getElementById('complete-trip-btn');
+  const $cancelTrip = document.getElementById('cancel-trip');
+  const $doneBtn = document.getElementById('done-btn');
+  const $stars = document.getElementById('stars');
+  const $tipRow = document.getElementById('tip-row');
+  const $seatCount = document.getElementById('seat-count');
+  const $seatMinus = document.getElementById('seat-minus');
+  const $seatPlus = document.getElementById('seat-plus');
+  const $arrivingText = document.getElementById('arriving-text');
+  const $arrivingCountdown = document.getElementById('arriving-countdown');
+  const $destMarkerLabel = document.getElementById('dest-marker-label');
+  const $tripDestMarkerLabel = document.getElementById('trip-dest-marker-label');
+  const $tripDropoff = document.getElementById('trip-dropoff');
+  const $statusTime = document.getElementById('status-time');
+  const $fareRoute = document.getElementById('fare-route');
+  const $fareBase = document.getElementById('fare-base');
+  const $fareDist = document.getElementById('fare-dist');
+  const $fareTime = document.getElementById('fare-time');
+  const $fareTotal = document.getElementById('fare-total');
+
+  // ---- Greeting ----
+  function updateGreeting() {
+    var h = new Date().getHours();
+    var period;
+    if (h >= 5 && h < 12) period = 'morning';
+    else if (h >= 12 && h < 17) period = 'afternoon';
+    else if (h >= 17 && h < 21) period = 'evening';
+    else period = 'night';
+    $greeting.textContent = 'Good ' + period + ', Alex 👋';
+  }
+
+  function updateStatusTime() {
+    var d = new Date();
+    var h = d.getHours();
+    var m = d.getMinutes();
+    $statusTime.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+  }
+
+  // ---- Screen Navigation ----
+  function showScreen(name) {
+    clearTimeout(matchingTimer);
+    clearInterval(countdownTimer);
+
+    var prev = screens[currentScreen];
+    var next = screens[name];
+    if (prev === next) return;
+
+    prev.classList.remove('active');
+    prev.classList.add('slide-out-left');
+
+    next.classList.remove('slide-out-left', 'slide-in-right');
+    next.classList.add('active');
+
+    setTimeout(function() {
+      prev.classList.remove('slide-out-left');
+    }, 350);
+
+    currentScreen = name;
+
+    // Screen-specific init
+    if (name === 'search') {
+      setTimeout(function() { $destInput.focus(); }, 100);
+      $destInput.value = '';
+      filterSuggestions('');
+    }
+    if (name === 'ride-options') {
+      requestedSeats = 1;
+      updateSeatSelector();
+    }
+    if (name === 'matching') {
+      matchingTimer = setTimeout(function() {
+        showScreen('trip');
+      }, 3000);
+    }
+    if (name === 'trip') {
+      startCountdown();
+    }
+    if (name === 'complete') {
+      updateFareCard();
+      resetComplete();
+    }
+  }
+
+  function goBack(from) {
+    clearTimeout(matchingTimer);
+    clearInterval(countdownTimer);
+
+    var prev = screens[currentScreen];
+    var map = {
+      search: 'home',
+      'ride-options': 'search',
+      matching: 'home',
+      trip: 'home'
+    };
+    var target = map[from] || 'home';
+    var next = screens[target];
+
+    prev.classList.remove('active');
+    prev.classList.add('anim-back-out');
+
+    next.classList.remove('slide-out-left', 'slide-in-right', 'anim-back-out');
+    next.classList.add('active', 'anim-back-in');
+
+    setTimeout(function() {
+      prev.classList.remove('anim-back-out');
+      next.classList.remove('anim-back-in');
+    }, 350);
+
+    currentScreen = target;
+
+    if (target === 'search') {
+      setTimeout(function() { $destInput.focus(); }, 100);
+    }
+  }
+
+  // ---- Search Filtering ----
+  function filterSuggestions(query) {
+    var q = query.toLowerCase().trim();
+    var suggestions = $suggestionsList.querySelectorAll('.suggestion-item');
+    var recent = $recentList.querySelectorAll('.suggestion-item');
+
+    var filterList = function(items) {
+      var anyVisible = false;
+      items.forEach(function(item) {
+        var name = (item.getAttribute('data-name') || '').toLowerCase();
+        var show = !q || name.indexOf(q) !== -1;
+        item.style.display = show ? '' : 'none';
+        if (show) anyVisible = true;
+      });
+      return anyVisible;
+    };
+
+    filterList(recent);
+    filterList(suggestions);
+  }
+
+  // ---- Ride Options ----
+  function selectRide(el) {
+    var options = $rideOptions.querySelectorAll('.ride-option');
+    options.forEach(function(opt) { opt.classList.remove('selected'); });
+    el.classList.add('selected');
+
+    var name = el.querySelector('.ride-name').textContent;
+    var price = el.getAttribute('data-price');
+    selectedRide = { name: name, price: parseInt(price, 10) };
+    $confirmBtn.textContent = 'Confirm ' + name + ' — kr ' + price;
+  }
+
+  // ---- Countdown ----
+  function startCountdown() {
+    countdownSeconds = 180;
+    clearInterval(countdownTimer);
+    updateCountdownDisplay();
+    countdownTimer = setInterval(function() {
+      countdownSeconds--;
+      if (countdownSeconds <= 0) {
+        clearInterval(countdownTimer);
+        countdownSeconds = 0;
+      }
+      updateCountdownDisplay();
+    }, 1000);
+  }
+
+  function updateCountdownDisplay() {
+    var m = Math.floor(countdownSeconds / 60);
+    var s = countdownSeconds % 60;
+    $arrivingCountdown.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    var mins = Math.ceil(countdownSeconds / 60);
+    $arrivingText.textContent = 'Arriving in ' + mins + ' min';
+  }
+
+  // ---- Fare Card ----
+  function updateFareCard() {
+    var total = selectedRide.price;
+    var baseFare = Math.round(total * 0.55);
+    var distFare = Math.round(total * 0.38);
+    var timeFare = total - baseFare - distFare;
+    $fareRoute.textContent = 'Nydalen → ' + selectedDestination;
+    $fareBase.textContent = 'kr ' + baseFare;
+    $fareDist.textContent = 'kr ' + distFare;
+    $fareTime.textContent = 'kr ' + timeFare;
+    $fareTotal.textContent = 'kr ' + total;
+  }
+
+  // ---- Trip Complete Reset ----
+  function resetComplete() {
+    // Reset stars
+    var starBtns = $stars.querySelectorAll('.star-btn');
+    starBtns.forEach(function(b) { b.classList.remove('active'); });
+    // Reset tips
+    var tipBtns = $tipRow.querySelectorAll('.tip-btn');
+    tipBtns.forEach(function(b) { b.classList.remove('active'); });
+    tipBtns[0].classList.add('active');
+    // Reset comment
+    var comment = document.querySelector('.comment-box');
+    if (comment) comment.value = '';
+  }
+
+  // ---- Event Listeners ----
+
+  // Home → Search
+  $homeSearch.addEventListener('click', function() { showScreen('search'); });
+
+  // Chips also go to search
+  document.querySelectorAll('.chip').forEach(function(chip) {
+    chip.addEventListener('click', function() { showScreen('search'); });
+  });
+
+  // Search back
+  $searchBack.addEventListener('click', function() { goBack('search'); });
+
+  // Destination input filter
+  $destInput.addEventListener('input', function() {
+    filterSuggestions(this.value);
+  });
+
+  // Suggestion click (event delegation on search results)
+  document.getElementById('search-results').addEventListener('click', function(e) {
+    var item = e.target.closest('.suggestion-item');
+    if (!item) return;
+    var name = item.getAttribute('data-name');
+    if (name) {
+      selectedDestination = name;
+      $destMarkerLabel.textContent = name;
+      if ($tripDestMarkerLabel) $tripDestMarkerLabel.textContent = name;
+      $tripDropoff.textContent = name;
+      showScreen('ride-options');
+    }
+  });
+
+  // Home recent places also navigate
+  document.querySelectorAll('#screen-home .place-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var name = this.querySelector('.place-name').textContent;
+      selectedDestination = name;
+      $destMarkerLabel.textContent = name;
+      if ($tripDestMarkerLabel) $tripDestMarkerLabel.textContent = name;
+      $tripDropoff.textContent = name;
+      showScreen('ride-options');
+    });
+  });
+
+  // Seat selector
+  function updateSeatSelector() {
+    $seatCount.textContent = requestedSeats;
+    $seatMinus.disabled = requestedSeats <= 1;
+    $seatPlus.disabled = requestedSeats >= 8;
+    // Dim ride options that don't have enough seats
+    var options = $rideOptions.querySelectorAll('.ride-option');
+    var selectedStillValid = false;
+    options.forEach(function(opt) {
+      var seats = parseInt(opt.getAttribute('data-seats'), 10);
+      if (seats < requestedSeats) {
+        opt.style.opacity = '0.35';
+        opt.style.pointerEvents = 'none';
+        opt.classList.remove('selected');
+      } else {
+        opt.style.opacity = '';
+        opt.style.pointerEvents = '';
+        if (opt.classList.contains('selected')) selectedStillValid = true;
+      }
+    });
+    // Auto-select first valid option if current selection was invalidated
+    if (!selectedStillValid) {
+      var firstValid = $rideOptions.querySelector('.ride-option:not([style*="pointer-events: none"])');
+      if (firstValid) selectRide(firstValid);
+    }
+  }
+
+  $seatMinus.addEventListener('click', function() {
+    if (requestedSeats > 1) { requestedSeats--; updateSeatSelector(); }
+  });
+  $seatPlus.addEventListener('click', function() {
+    if (requestedSeats < 8) { requestedSeats++; updateSeatSelector(); }
+  });
+
+  // Ride option select
+  $rideOptions.addEventListener('click', function(e) {
+    var option = e.target.closest('.ride-option');
+    if (option && option.style.pointerEvents !== 'none') selectRide(option);
+  });
+
+  // Ride back
+  $rideBack.addEventListener('click', function() { goBack('ride-options'); });
+
+  // Confirm ride
+  $confirmBtn.addEventListener('click', function() { showScreen('matching'); });
+
+  // Cancel matching
+  $cancelMatching.addEventListener('click', function() {
+    clearTimeout(matchingTimer);
+    showScreen('home');
+  });
+
+  // Cancel trip
+  $cancelTrip.addEventListener('click', function() {
+    clearInterval(countdownTimer);
+    showScreen('home');
+  });
+
+  // Complete trip (demo)
+  $completeTripBtn.addEventListener('click', function() {
+    clearInterval(countdownTimer);
+    showScreen('complete');
+  });
+
+  // Stars
+  $stars.addEventListener('click', function(e) {
+    var btn = e.target.closest('.star-btn');
+    if (!btn) return;
+    var val = parseInt(btn.getAttribute('data-star'), 10);
+    var allStars = $stars.querySelectorAll('.star-btn');
+    allStars.forEach(function(b) {
+      var s = parseInt(b.getAttribute('data-star'), 10);
+      b.classList.toggle('active', s <= val);
+    });
+  });
+
+  // Tips
+  $tipRow.addEventListener('click', function(e) {
+    var btn = e.target.closest('.tip-btn');
+    if (!btn) return;
+    var allTips = $tipRow.querySelectorAll('.tip-btn');
+    allTips.forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+  });
+
+  // Done
+  $doneBtn.addEventListener('click', function() { showScreen('home'); });
+
+  // ---- Init ----
+  updateGreeting();
+  updateStatusTime();
+  setInterval(updateStatusTime, 10000);
+
+})();
+</script>
+</body>
+</html>

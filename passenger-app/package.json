@@ -1,0 +1,19 @@
+{
+  "name": "ridego-passenger",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "db:start": "npx supabase start",
+    "db:stop": "npx supabase stop",
+    "db:reset": "npx supabase db reset",
+    "db:migrate": "npx supabase migration up --local",
+    "db:status": "npx supabase status",
+    "db:studio": "open http://localhost:54323",
+    "dev": "npx supabase start && python3 -m http.server 3000",
+    "functions:serve": "npx supabase functions serve"
+  },
+  "devDependencies": {
+    "supabase": "^2.15.8"
+  }
+}
