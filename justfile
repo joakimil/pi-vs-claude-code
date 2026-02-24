@@ -75,6 +75,10 @@ ext-session-replay:
 ext-theme-cycler:
     pi -e extensions/theme-cycler.ts -e extensions/minimal.ts
 
+# 17. Input sound: play a chime when the agent needs your input
+ext-input-sound:
+    pi -e extensions/input-sound.ts -e extensions/theme-cycler.ts
+
 # utils
 
 # Open pi with one or more stacked extensions in a new terminal: just open minimal tool-counter
