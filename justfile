@@ -79,6 +79,16 @@ ext-theme-cycler:
 ext-input-sound:
     pi -e extensions/input-sound.ts
 
+
+# custom
+
+# 18. My stack: input sound + tilldone + theme cycler + damage control
+ext-my-stack:
+    pi -e extensions/input-sound.ts -e extensions/tilldone.ts -e extensions/theme-cycler.ts -e extensions/damage-control.ts
+
+#19. agent team and sound
+ext-agent-team-and-sound:
+    pi -e extensions/agent-team.ts -e extensions/theme-cycler.ts -e extensions/input-sound.ts
 # utils
 
 # Open pi with one or more stacked extensions in a new terminal: just open minimal tool-counter

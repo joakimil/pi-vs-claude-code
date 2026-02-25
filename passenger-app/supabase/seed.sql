@@ -18,12 +18,13 @@ insert into public.drivers (id, display_name, phone, rating_avg, total_trips, is
   ('d5555555-5555-5555-5555-555555555555', 'Lars O.', '+4795678901', 4.60, 328, true, false);
 
 -- Vehicles (available_seats = actual passenger seats in each car)
+-- Using valid hex UUIDs (replaced 'v' prefix with 'b')
 insert into public.vehicles (id, driver_id, make, model, year, color, license_plate, vehicle_type, is_active, available_seats) values
-  ('v1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 'Toyota', 'Camry', 2022, 'White', 'EL 12345', 'sedan', true, 4),
-  ('v2222222-2222-2222-2222-222222222222', 'd2222222-2222-2222-2222-222222222222', 'Tesla', 'Model 3', 2023, 'Black', 'EK 67890', 'sedan', true, 4),
-  ('v3333333-3333-3333-3333-333333333333', 'd3333333-3333-3333-3333-333333333333', 'Volkswagen', 'ID.4', 2023, 'Silver', 'EV 11223', 'suv', true, 4),
-  ('v4444444-4444-4444-4444-444444444444', 'd4444444-4444-4444-4444-444444444444', 'Mercedes-Benz', 'E-Class', 2022, 'Dark Blue', 'EB 44556', 'sedan', true, 6),
-  ('v5555555-5555-5555-5555-555555555555', 'd5555555-5555-5555-5555-555555555555', 'Volkswagen', 'Multivan', 2021, 'Gray', 'DN 78901', 'van', true, 7);
+  ('b1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 'Toyota', 'Camry', 2022, 'White', 'EL 12345', 'sedan', true, 4),
+  ('b2222222-2222-2222-2222-222222222222', 'd2222222-2222-2222-2222-222222222222', 'Tesla', 'Model 3', 2023, 'Black', 'EK 67890', 'sedan', true, 4),
+  ('b3333333-3333-3333-3333-333333333333', 'd3333333-3333-3333-3333-333333333333', 'Volkswagen', 'ID.4', 2023, 'Silver', 'EV 11223', 'suv', true, 4),
+  ('b4444444-4444-4444-4444-444444444444', 'd4444444-4444-4444-4444-444444444444', 'Mercedes-Benz', 'E-Class', 2022, 'Dark Blue', 'EB 44556', 'sedan', true, 6),
+  ('b5555555-5555-5555-5555-555555555555', 'd5555555-5555-5555-5555-555555555555', 'Volkswagen', 'Multivan', 2021, 'Gray', 'DN 78901', 'van', true, 7);
 
 -- Driver Locations (positioned around central Oslo)
 -- Mohamed: near Nydalen (59.9494, 10.7655)
@@ -38,8 +39,8 @@ insert into public.driver_locations (driver_id, location, heading, speed_kmh, up
   ('d4444444-4444-4444-4444-444444444444', ST_SetSRID(ST_MakePoint(10.7528, 59.9111), 4326)::geography, 0.0, 15.0, now()),
   ('d5555555-5555-5555-5555-555555555555', ST_SetSRID(ST_MakePoint(10.7010, 59.9215), 4326)::geography, 45.0, 0, now());
 
--- Promo Codes
+-- Promo Codes (replaced 'p' prefix with 'c')
 insert into public.promo_codes (id, code, promo_type, value, max_discount_nok, min_fare_nok, max_uses, valid_until, is_active) values
-  ('p1111111-1111-1111-1111-111111111111', 'WELCOME50', 'percentage', 50.00, 100.00, 49.00, null, now() + interval '90 days', true),
-  ('p2222222-2222-2222-2222-222222222222', 'OSLO2025', 'fixed', 30.00, null, 79.00, 1000, now() + interval '30 days', true),
-  ('p3333333-3333-3333-3333-333333333333', 'FREERIDE', 'percentage', 100.00, 150.00, 0, 100, now() + interval '7 days', true);
+  ('c1111111-1111-1111-1111-111111111111', 'WELCOME50', 'percentage', 50.00, 100.00, 49.00, null, now() + interval '90 days', true),
+  ('c2222222-2222-2222-2222-222222222222', 'OSLO2025', 'fixed', 30.00, null, 79.00, 1000, now() + interval '30 days', true),
+  ('c3333333-3333-3333-3333-333333333333', 'FREERIDE', 'percentage', 100.00, 150.00, 0, 100, now() + interval '7 days', true);

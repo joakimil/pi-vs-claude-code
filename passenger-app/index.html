@@ -958,6 +958,257 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Auth Screen */
+  .auth-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .auth-screen.hidden { display: none; }
+  .auth-card {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .auth-logo { font-size: 56px; margin-bottom: 4px; }
+  .auth-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+  }
+  .auth-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 280px;
+    line-height: 1.5;
+  }
+  .auth-tabs {
+    display: flex;
+    width: 100%;
+    background: var(--bg-surface);
+    border-radius: 12px;
+    padding: 4px;
+    margin-top: 4px;
+  }
+  .auth-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+  .auth-tab.active {
+    background: var(--accent);
+    color: #fff;
+  }
+  .auth-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .auth-form.hidden { display: none; }
+  .auth-input-group { position: relative; width: 100%; }
+  .auth-input-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .auth-input {
+    width: 100%;
+    background: var(--bg-surface-raised);
+    border: 1.5px solid var(--bg-surface-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 16px;
+    color: var(--text-primary);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .auth-input:focus { border-color: var(--accent); }
+  .auth-input.error { border-color: var(--danger); }
+  .auth-input::placeholder { color: var(--text-muted, #666); }
+  .auth-error {
+    color: var(--danger);
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 18px;
+    text-align: center;
+  }
+  .auth-success {
+    color: var(--success, #22c55e);
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 18px;
+    text-align: center;
+  }
+  .auth-submit {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .auth-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .auth-submit:hover:not(:disabled) { opacity: 0.9; }
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    color: var(--text-muted, #666);
+    font-size: 12px;
+  }
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--bg-surface-border);
+  }
+  .auth-footer {
+    font-size: 12px;
+    color: var(--text-muted, #666);
+    text-align: center;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+
+  /* Account Screen */
+  .account-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 24px;
+    gap: 8px;
+  }
+  .account-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+  .account-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .account-email {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .account-section {
+    padding: 0 20px;
+    margin-bottom: 16px;
+  }
+  .account-menu {
+    background: var(--bg-surface);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .account-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .account-menu-item:not(:last-child) {
+    border-bottom: 1px solid var(--bg-surface-border);
+  }
+  .account-menu-item:active {
+    background: var(--bg-surface-raised);
+  }
+  .account-menu-item svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+  }
+  .account-menu-item span {
+    flex: 1;
+  }
+  .account-menu-item .chevron {
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+  }
+  .btn-signout {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 14px;
+    background: var(--bg-surface);
+    color: var(--danger);
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.15s;
+  }
+  .btn-signout:active {
+    background: var(--bg-surface-raised);
+  }
+  .btn-signout svg {
+    width: 20px;
+    height: 20px;
+    color: var(--danger);
+  }
+  .account-version {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 20px;
+  }
+
   /* Utility */
   .mt-12 { margin-top: 12px; }
   .mt-16 { margin-top: 16px; }
@@ -968,7 +1219,58 @@
 </style>
 </head>
 <body>
-<div class="phone-frame" id="app">
+<!-- Auth Screen -->
+<div class="auth-screen" id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">🚕</div>
+    <div class="auth-title">RideGo</div>
+    <div class="auth-subtitle">Sign in to request rides around Oslo</div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- Sign In Form -->
+    <form class="auth-form" id="form-signin" onsubmit="handleSignIn(event)">
+      <div class="auth-input-group">
+        <label>Email</label>
+        <input class="auth-input" type="email" id="signin-email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="auth-input-group">
+        <label>Password</label>
+        <input class="auth-input" type="password" id="signin-password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <div class="auth-error" id="signin-error"></div>
+      <button class="auth-submit" type="submit" id="signin-btn">Sign In</button>
+    </form>
+
+    <!-- Sign Up Form -->
+    <form class="auth-form hidden" id="form-signup" onsubmit="handleSignUp(event)">
+      <div class="auth-input-group">
+        <label>Name</label>
+        <input class="auth-input" type="text" id="signup-name" placeholder="Your name" required autocomplete="name">
+      </div>
+      <div class="auth-input-group">
+        <label>Email</label>
+        <input class="auth-input" type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="auth-input-group">
+        <label>Password</label>
+        <input class="auth-input" type="password" id="signup-password" placeholder="Min 6 characters" required minlength="6" autocomplete="new-password">
+      </div>
+      <div class="auth-error" id="signup-error"></div>
+      <div class="auth-success" id="signup-success"></div>
+      <button class="auth-submit" type="submit" id="signup-btn">Create Account</button>
+    </form>
+
+    <div class="auth-footer">
+      Private preview — by invitation only
+    </div>
+  </div>
+</div>
+
+<div class="phone-frame" id="app" style="display:none;">
 
   <!-- Status Bar -->
   <div class="status-bar" id="status-bar">
@@ -1032,19 +1334,19 @@
       </div>
     </div>
     <div class="bottom-nav">
-      <div class="nav-item active">
+      <div class="nav-item active" data-nav="home">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span class="nav-label">Home</span>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" data-nav="activity">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         <span class="nav-label">Activity</span>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" data-nav="account">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span class="nav-label">Account</span>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" data-nav="help">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span class="nav-label">Help</span>
       </div>
@@ -1411,60 +1713,244 @@
     <button class="btn-primary" id="done-btn">Done</button>
   </div>
 
+  <!-- ==================== SCREEN 7: ACCOUNT ==================== -->
+  <div class="screen" id="screen-account">
+    <div class="account-header">
+      <div class="account-avatar" id="account-avatar">J</div>
+      <h2 class="account-name" id="account-name">—</h2>
+      <p class="account-email" id="account-email">—</p>
+    </div>
+
+    <div class="account-section">
+      <div class="account-menu">
+        <div class="account-menu-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Edit Profile</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="account-menu-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          <span>Payment Methods</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="account-menu-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Safety</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="account-menu-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Settings</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="account-section">
+      <button class="btn-signout" id="btn-signout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+
+    <div class="account-version">RideGo v1.0 — Oslo</div>
+
+    <div class="bottom-nav">
+      <div class="nav-item" data-nav="home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="nav-label">Home</span>
+      </div>
+      <div class="nav-item" data-nav="activity">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="nav-label">Activity</span>
+      </div>
+      <div class="nav-item active" data-nav="account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="nav-label">Account</span>
+      </div>
+      <div class="nav-item" data-nav="help">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span class="nav-label">Help</span>
+      </div>
+    </div>
+  </div>
+
 </div>
 
+<script src="/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 (function() {
   'use strict';
 
+  // ---- Supabase Setup ----
+  var SUPABASE_URL = window.__RIDEGO_SUPABASE_URL || 'https://plpkelkbwcyuglaghsfk.supabase.co';
+  var SUPABASE_KEY = window.__RIDEGO_SUPABASE_KEY || 'sb_publishable_anPF5rXktq-YMpHzihweYg_cf6VhRlq';
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ---- Auth UI ----
+  var authScreen = document.getElementById('auth-screen');
+  var appEl = document.getElementById('app');
+
+  // Tab switching (exposed globally for onclick)
+  window.switchAuthTab = function(tab) {
+    document.getElementById('tab-signin').classList.toggle('active', tab === 'signin');
+    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('form-signin').classList.toggle('hidden', tab !== 'signin');
+    document.getElementById('form-signup').classList.toggle('hidden', tab !== 'signup');
+    // Clear errors
+    document.getElementById('signin-error').textContent = '';
+    document.getElementById('signup-error').textContent = '';
+    document.getElementById('signup-success').textContent = '';
+  };
+
+  // Sign In
+  window.handleSignIn = async function(e) {
+    e.preventDefault();
+    var btn = document.getElementById('signin-btn');
+    var errEl = document.getElementById('signin-error');
+    errEl.textContent = '';
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+
+    var email = document.getElementById('signin-email').value.trim();
+    var password = document.getElementById('signin-password').value;
+
+    var result = await sb.auth.signInWithPassword({ email: email, password: password });
+    if (result.error) {
+      errEl.textContent = result.error.message;
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
+      return;
+    }
+
+    // Success — show app
+    currentUser = result.data.user;
+    authScreen.classList.add('hidden');
+    appEl.style.display = '';
+    initApp();
+  };
+
+  // Sign Up
+  window.handleSignUp = async function(e) {
+    e.preventDefault();
+    var btn = document.getElementById('signup-btn');
+    var errEl = document.getElementById('signup-error');
+    var successEl = document.getElementById('signup-success');
+    errEl.textContent = '';
+    successEl.textContent = '';
+    btn.disabled = true;
+    btn.textContent = 'Creating account…';
+
+    var name = document.getElementById('signup-name').value.trim();
+    var email = document.getElementById('signup-email').value.trim();
+    var password = document.getElementById('signup-password').value;
+
+    var result = await sb.auth.signUp({
+      email: email,
+      password: password,
+      options: { data: { display_name: name } }
+    });
+
+    if (result.error) {
+      errEl.textContent = result.error.message;
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
+      return;
+    }
+
+    // If email confirmation is required
+    if (result.data.user && !result.data.session) {
+      successEl.textContent = 'Check your email to confirm your account, then sign in.';
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
+      return;
+    }
+
+    // Auto-signed in (email confirmation disabled)
+    currentUser = result.data.user;
+    authScreen.classList.add('hidden');
+    appEl.style.display = '';
+    initApp();
+  };
+
+  // Check for existing session on load
+  (async function checkSession() {
+    var sessionResult = await sb.auth.getSession();
+    if (sessionResult.data.session) {
+      currentUser = sessionResult.data.session.user;
+      authScreen.classList.add('hidden');
+      appEl.style.display = '';
+      initApp();
+    }
+  })();
+
+  // ---- Place Coordinates (Oslo) ----
+  var PLACES = {
+    'Aker Brygge':             { lat: 59.9075, lng: 10.7295, address: 'Brynjulf Bulls plass 6, Oslo' },
+    'Oslo Sentralstasjon':     { lat: 59.9111, lng: 10.7528, address: 'Jernbanetorget 1, Oslo' },
+    'Grünerløkka':             { lat: 59.9225, lng: 10.7590, address: 'Thorvald Meyers gate, Oslo' },
+    'Nationaltheatret':        { lat: 59.9147, lng: 10.7340, address: 'Johanne Dybwads plass 1, Oslo' },
+    'Oslo Lufthavn':           { lat: 60.1939, lng: 11.1004, address: 'Edvard Munchs veg, Gardermoen' },
+    'Vigeland Sculpture Park': { lat: 59.9269, lng: 10.7009, address: 'Nobels gate 32, Oslo' },
+    'Holmenkollen':            { lat: 59.9617, lng: 10.6673, address: 'Kongeveien 5, Oslo' }
+  };
+  var PICKUP = { name: 'Nydalen T-banestasjon', address: 'Nydalen allé 1, Oslo', lat: 59.9494, lng: 10.7655 };
+
   // ---- State ----
-  let currentScreen = 'home';
-  let selectedRide = { name: 'Economy', price: 89 };
-  let selectedDestination = 'Aker Brygge';
-  let requestedSeats = 1;
-  let matchingTimer = null;
-  let countdownTimer = null;
-  let countdownSeconds = 180;
+  var currentScreen = 'home';
+  var currentUser = null;
+  var rideTypes = [];
+  var selectedRide = null;         // { id, name, price, estimate }
+  var selectedDestination = null;  // { name, address, lat, lng }
+  var requestedSeats = 1;
+  var currentRideId = null;
+  var matchedDriver = null;        // from find_nearby_drivers
+  var matchingTimer = null;
+  var countdownTimer = null;
+  var countdownSeconds = 180;
 
   // ---- DOM Refs ----
-  const screens = {
+  var screens = {
     home: document.getElementById('screen-home'),
     search: document.getElementById('screen-search'),
     'ride-options': document.getElementById('screen-ride-options'),
     matching: document.getElementById('screen-matching'),
     trip: document.getElementById('screen-trip'),
-    complete: document.getElementById('screen-complete')
+    complete: document.getElementById('screen-complete'),
+    account: document.getElementById('screen-account')
   };
 
-  const $greeting = document.getElementById('greeting');
-  const $homeSearch = document.getElementById('home-search');
-  const $searchBack = document.getElementById('search-back');
-  const $destInput = document.getElementById('dest-input');
-  const $suggestionsList = document.getElementById('suggestions-list');
-  const $recentList = document.getElementById('recent-list');
-  const $rideOptions = document.getElementById('ride-options');
-  const $confirmBtn = document.getElementById('confirm-ride-btn');
-  const $rideBack = document.getElementById('ride-back');
-  const $cancelMatching = document.getElementById('cancel-matching');
-  const $completeTripBtn = document.getElementById('complete-trip-btn');
-  const $cancelTrip = document.getElementById('cancel-trip');
-  const $doneBtn = document.getElementById('done-btn');
-  const $stars = document.getElementById('stars');
-  const $tipRow = document.getElementById('tip-row');
-  const $seatCount = document.getElementById('seat-count');
-  const $seatMinus = document.getElementById('seat-minus');
-  const $seatPlus = document.getElementById('seat-plus');
-  const $arrivingText = document.getElementById('arriving-text');
-  const $arrivingCountdown = document.getElementById('arriving-countdown');
-  const $destMarkerLabel = document.getElementById('dest-marker-label');
-  const $tripDestMarkerLabel = document.getElementById('trip-dest-marker-label');
-  const $tripDropoff = document.getElementById('trip-dropoff');
-  const $statusTime = document.getElementById('status-time');
-  const $fareRoute = document.getElementById('fare-route');
-  const $fareBase = document.getElementById('fare-base');
-  const $fareDist = document.getElementById('fare-dist');
-  const $fareTime = document.getElementById('fare-time');
-  const $fareTotal = document.getElementById('fare-total');
+  var $greeting = document.getElementById('greeting');
+  var $homeSearch = document.getElementById('home-search');
+  var $searchBack = document.getElementById('search-back');
+  var $destInput = document.getElementById('dest-input');
+  var $suggestionsList = document.getElementById('suggestions-list');
+  var $recentList = document.getElementById('recent-list');
+  var $rideOptions = document.getElementById('ride-options');
+  var $confirmBtn = document.getElementById('confirm-ride-btn');
+  var $rideBack = document.getElementById('ride-back');
+  var $cancelMatching = document.getElementById('cancel-matching');
+  var $completeTripBtn = document.getElementById('complete-trip-btn');
+  var $cancelTrip = document.getElementById('cancel-trip');
+  var $doneBtn = document.getElementById('done-btn');
+  var $stars = document.getElementById('stars');
+  var $tipRow = document.getElementById('tip-row');
+  var $seatCount = document.getElementById('seat-count');
+  var $seatMinus = document.getElementById('seat-minus');
+  var $seatPlus = document.getElementById('seat-plus');
+  var $arrivingText = document.getElementById('arriving-text');
+  var $arrivingCountdown = document.getElementById('arriving-countdown');
+  var $destMarkerLabel = document.getElementById('dest-marker-label');
+  var $tripDestMarkerLabel = document.getElementById('trip-dest-marker-label');
+  var $tripDropoff = document.getElementById('trip-dropoff');
+  var $statusTime = document.getElementById('status-time');
+  var $fareRoute = document.getElementById('fare-route');
+  var $fareBase = document.getElementById('fare-base');
+  var $fareDist = document.getElementById('fare-dist');
+  var $fareTime = document.getElementById('fare-time');
+  var $fareTotal = document.getElementById('fare-total');
+  var $matchingSub = document.querySelector('.matching-sub');
 
   // ---- Greeting ----
   function updateGreeting() {
@@ -1474,7 +1960,13 @@
     else if (h >= 12 && h < 17) period = 'afternoon';
     else if (h >= 17 && h < 21) period = 'evening';
     else period = 'night';
-    $greeting.textContent = 'Good ' + period + ', Alex 👋';
+    var userName = 'there';
+    if (currentUser) {
+      userName = (currentUser.user_metadata && currentUser.user_metadata.display_name)
+        || (currentUser.email && currentUser.email.split('@')[0])
+        || 'there';
+    }
+    $greeting.textContent = 'Good ' + period + ', ' + userName + ' 👋';
   }
 
   function updateStatusTime() {
@@ -1499,9 +1991,7 @@
     next.classList.remove('slide-out-left', 'slide-in-right');
     next.classList.add('active');
 
-    setTimeout(function() {
-      prev.classList.remove('slide-out-left');
-    }, 350);
+    setTimeout(function() { prev.classList.remove('slide-out-left'); }, 350);
 
     currentScreen = name;
 
@@ -1513,19 +2003,16 @@
     }
     if (name === 'ride-options') {
       requestedSeats = 1;
-      updateSeatSelector();
+      loadRideOptions();
     }
     if (name === 'matching') {
-      matchingTimer = setTimeout(function() {
-        showScreen('trip');
-      }, 3000);
+      startMatching();
     }
     if (name === 'trip') {
       startCountdown();
     }
     if (name === 'complete') {
-      updateFareCard();
-      resetComplete();
+      completeRide();
     }
   }
 
@@ -1534,18 +2021,12 @@
     clearInterval(countdownTimer);
 
     var prev = screens[currentScreen];
-    var map = {
-      search: 'home',
-      'ride-options': 'search',
-      matching: 'home',
-      trip: 'home'
-    };
+    var map = { search: 'home', 'ride-options': 'search', matching: 'home', trip: 'home' };
     var target = map[from] || 'home';
     var next = screens[target];
 
     prev.classList.remove('active');
     prev.classList.add('anim-back-out');
-
     next.classList.remove('slide-out-left', 'slide-in-right', 'anim-back-out');
     next.classList.add('active', 'anim-back-in');
 
@@ -1555,7 +2036,6 @@
     }, 350);
 
     currentScreen = target;
-
     if (target === 'search') {
       setTimeout(function() { $destInput.focus(); }, 100);
     }
@@ -1564,25 +2044,89 @@
   // ---- Search Filtering ----
   function filterSuggestions(query) {
     var q = query.toLowerCase().trim();
-    var suggestions = $suggestionsList.querySelectorAll('.suggestion-item');
-    var recent = $recentList.querySelectorAll('.suggestion-item');
-
     var filterList = function(items) {
-      var anyVisible = false;
       items.forEach(function(item) {
         var name = (item.getAttribute('data-name') || '').toLowerCase();
-        var show = !q || name.indexOf(q) !== -1;
-        item.style.display = show ? '' : 'none';
-        if (show) anyVisible = true;
+        item.style.display = (!q || name.indexOf(q) !== -1) ? '' : 'none';
       });
-      return anyVisible;
     };
-
-    filterList(recent);
-    filterList(suggestions);
+    filterList($recentList.querySelectorAll('.suggestion-item'));
+    filterList($suggestionsList.querySelectorAll('.suggestion-item'));
   }
 
-  // ---- Ride Options ----
+  // ---- Select a destination (from search or home) ----
+  function selectDestination(name) {
+    var place = PLACES[name];
+    if (!place) {
+      console.warn('Unknown place:', name);
+      place = { lat: 59.91, lng: 10.75, address: 'Oslo, Norway' };
+    }
+    selectedDestination = { name: name, address: place.address, lat: place.lat, lng: place.lng };
+    $destMarkerLabel.textContent = name;
+    if ($tripDestMarkerLabel) $tripDestMarkerLabel.textContent = name;
+    $tripDropoff.textContent = name;
+    showScreen('ride-options');
+  }
+
+  // ---- Load ride options with real fares from DB ----
+  async function loadRideOptions() {
+    if (!selectedDestination || rideTypes.length === 0) return;
+
+    // Show loading state
+    $rideOptions.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);">Calculating fares...</div>';
+    $confirmBtn.disabled = true;
+    $confirmBtn.textContent = 'Calculating...';
+
+    // Get fare estimates for all ride types in parallel
+    var estimates = await Promise.all(rideTypes.map(function(rt) {
+      return sb.rpc('estimate_fare_latlng', {
+        p_ride_type_id: rt.id,
+        p_pickup_lat: PICKUP.lat,
+        p_pickup_lng: PICKUP.lng,
+        p_dropoff_lat: selectedDestination.lat,
+        p_dropoff_lng: selectedDestination.lng
+      }).then(function(res) {
+        return { rideType: rt, estimate: res.error ? null : res.data };
+      });
+    }));
+
+    // Render ride option cards
+    var html = '';
+    estimates.forEach(function(item, i) {
+      var rt = item.rideType;
+      var est = item.estimate;
+      var price = est ? Math.round(est.estimated_fare) : rt.min_fare_nok;
+      var eta = est ? Math.round(est.duration_min) : '~';
+      var selClass = i === 0 ? 'selected' : '';
+      html +=
+        '<div class="ride-option ' + selClass + '" data-ride-id="' + rt.id + '" data-ride="' + rt.name.toLowerCase() + '" data-price="' + price + '" data-seats="' + rt.max_passengers + '">' +
+          '<div class="ride-icon">' + rt.icon + '</div>' +
+          '<div class="ride-info">' +
+            '<div class="ride-name">' + rt.name + '</div>' +
+            '<div class="ride-desc"><span class="seat-badge">' + rt.max_passengers + ' seats</span> · ' + rt.description + '</div>' +
+          '</div>' +
+          '<div class="ride-meta">' +
+            '<div class="ride-eta">' + eta + ' min</div>' +
+            '<div class="ride-price">kr ' + price + '</div>' +
+          '</div>' +
+        '</div>';
+    });
+    $rideOptions.innerHTML = html;
+
+    // Store estimates for fare breakdown later
+    $rideOptions._estimates = estimates;
+
+    // Select first option
+    var firstOption = $rideOptions.querySelector('.ride-option');
+    if (firstOption) selectRide(firstOption);
+
+    // Apply seat filter
+    updateSeatSelector();
+
+    $confirmBtn.disabled = false;
+  }
+
+  // ---- Ride Selection ----
   function selectRide(el) {
     var options = $rideOptions.querySelectorAll('.ride-option');
     options.forEach(function(opt) { opt.classList.remove('selected'); });
@@ -1590,14 +2134,124 @@
 
     var name = el.querySelector('.ride-name').textContent;
     var price = el.getAttribute('data-price');
-    selectedRide = { name: name, price: parseInt(price, 10) };
+    var rideTypeId = el.getAttribute('data-ride-id');
+
+    // Find the estimate for this ride type
+    var estimateData = null;
+    if ($rideOptions._estimates) {
+      var found = $rideOptions._estimates.find(function(e) { return e.rideType.id === rideTypeId; });
+      if (found) estimateData = found.estimate;
+    }
+
+    selectedRide = { id: rideTypeId, name: name, price: parseInt(price, 10), estimate: estimateData };
     $confirmBtn.textContent = 'Confirm ' + name + ' — kr ' + price;
+  }
+
+  // ---- Matching: create ride + find driver ----
+  async function startMatching() {
+    $matchingSub.textContent = 'Searching nearby drivers...';
+
+    // 1. Create ride via request_ride RPC
+    var rpcResult = await sb.rpc('request_ride', {
+      p_ride_type_id: selectedRide.id,
+      p_pickup_name: PICKUP.name,
+      p_pickup_address: PICKUP.address,
+      p_pickup_lat: PICKUP.lat,
+      p_pickup_lng: PICKUP.lng,
+      p_dropoff_name: selectedDestination.name,
+      p_dropoff_address: selectedDestination.address,
+      p_dropoff_lat: selectedDestination.lat,
+      p_dropoff_lng: selectedDestination.lng,
+      p_requested_seats: requestedSeats
+    });
+
+    if (rpcResult.error) {
+      console.error('request_ride error:', rpcResult.error);
+      $matchingSub.textContent = 'Error: ' + rpcResult.error.message;
+      return;
+    }
+
+    currentRideId = rpcResult.data.ride_id;
+    console.log('Ride created:', currentRideId);
+
+    // 2. Find nearby drivers
+    $matchingSub.textContent = 'Found ride, matching driver...';
+
+    var driversResult = await sb.rpc('find_nearby_drivers_latlng', {
+      p_lat: PICKUP.lat,
+      p_lng: PICKUP.lng,
+      p_requested_seats: requestedSeats
+    });
+
+    if (driversResult.error || !driversResult.data || driversResult.data.length === 0) {
+      console.error('No drivers found:', driversResult.error);
+      $matchingSub.textContent = 'No drivers available. Please try again.';
+      // Cancel the ride
+      await sb.rpc('cancel_ride', { p_ride_id: currentRideId });
+      matchingTimer = setTimeout(function() { goBack('matching'); }, 2000);
+      return;
+    }
+
+    // 3. Pick closest driver
+    matchedDriver = driversResult.data[0];
+    console.log('Matched driver:', matchedDriver.display_name);
+    $matchingSub.textContent = 'Driver found: ' + matchedDriver.display_name + '!';
+
+    // 4. Assign driver to ride (update ride record)
+    // Need to find the vehicle_id for this driver
+    var vehicleResult = await sb.from('vehicles')
+      .select('id')
+      .eq('driver_id', matchedDriver.driver_id)
+      .eq('is_active', true)
+      .limit(1)
+      .single();
+
+    var vehicleId = vehicleResult.data ? vehicleResult.data.id : null;
+
+    await sb.from('rides')
+      .update({
+        driver_id: matchedDriver.driver_id,
+        vehicle_id: vehicleId,
+        status: 'arriving',
+        matched_at: new Date().toISOString(),
+        eta_pickup_min: matchedDriver.eta_min || 3
+      })
+      .eq('id', currentRideId);
+
+    // 5. Update trip screen with real driver data
+    populateTripScreen();
+
+    // 6. Transition to trip screen after brief delay
+    matchingTimer = setTimeout(function() {
+      showScreen('trip');
+    }, 1500);
+  }
+
+  // ---- Populate trip screen with matched driver ----
+  function populateTripScreen() {
+    if (!matchedDriver) return;
+    var d = matchedDriver;
+    var avatar = document.querySelector('#screen-trip .driver-avatar');
+    var nameEl = document.querySelector('#screen-trip .driver-name');
+    var ratingEl = document.querySelector('#screen-trip .driver-rating');
+    var carEl = document.querySelector('#screen-trip .driver-car');
+
+    avatar.textContent = d.display_name.charAt(0);
+    nameEl.textContent = d.display_name;
+    ratingEl.textContent = d.rating_avg + ' ⭐ · ' + d.total_trips + ' trips';
+    carEl.textContent = d.vehicle_color + ' ' + d.vehicle_make + ' ' + d.vehicle_model + ' · ' + d.vehicle_plate;
+
+    // Set ETA
+    var eta = Math.max(Math.round(d.eta_min || 1), 1);
+    countdownSeconds = eta * 60;
   }
 
   // ---- Countdown ----
   function startCountdown() {
-    countdownSeconds = 180;
     clearInterval(countdownTimer);
+    if (matchedDriver && matchedDriver.eta_min) {
+      countdownSeconds = Math.max(Math.round(matchedDriver.eta_min), 1) * 60;
+    }
     updateCountdownDisplay();
     countdownTimer = setInterval(function() {
       countdownSeconds--;
@@ -1617,83 +2271,64 @@
     $arrivingText.textContent = 'Arriving in ' + mins + ' min';
   }
 
-  // ---- Fare Card ----
+  // ---- Complete Ride ----
+  async function completeRide() {
+    // Update ride to completed in DB
+    if (currentRideId) {
+      var result = await sb.rpc('complete_ride', { p_ride_id: currentRideId });
+      if (result.error) {
+        console.error('complete_ride error:', result.error);
+      } else {
+        console.log('Ride completed:', currentRideId);
+      }
+    }
+    updateFareCard();
+    resetComplete();
+  }
+
+  // ---- Fare Card (use real estimate data) ----
   function updateFareCard() {
-    var total = selectedRide.price;
-    var baseFare = Math.round(total * 0.55);
-    var distFare = Math.round(total * 0.38);
-    var timeFare = total - baseFare - distFare;
-    $fareRoute.textContent = 'Nydalen → ' + selectedDestination;
-    $fareBase.textContent = 'kr ' + baseFare;
-    $fareDist.textContent = 'kr ' + distFare;
-    $fareTime.textContent = 'kr ' + timeFare;
-    $fareTotal.textContent = 'kr ' + total;
+    var est = selectedRide ? selectedRide.estimate : null;
+    var destName = selectedDestination ? selectedDestination.name : 'Destination';
+
+    $fareRoute.textContent = 'Nydalen → ' + destName;
+
+    if (est) {
+      $fareBase.textContent = 'kr ' + Math.round(est.base_fare);
+      $fareDist.textContent = 'kr ' + Math.round(est.distance_fare);
+      $fareTime.textContent = 'kr ' + Math.round(est.time_fare);
+      $fareTotal.textContent = 'kr ' + Math.round(est.estimated_fare);
+
+      // Update distance/time labels
+      var distRow = $fareDist.parentElement;
+      var timeRow = $fareTime.parentElement;
+      distRow.querySelector('span:first-child').textContent = 'Distance (' + est.distance_km + ' km)';
+      timeRow.querySelector('span:first-child').textContent = 'Time (' + est.duration_min + ' min)';
+    } else {
+      var total = selectedRide ? selectedRide.price : 89;
+      $fareBase.textContent = 'kr ' + Math.round(total * 0.55);
+      $fareDist.textContent = 'kr ' + Math.round(total * 0.38);
+      $fareTime.textContent = 'kr ' + (total - Math.round(total * 0.55) - Math.round(total * 0.38));
+      $fareTotal.textContent = 'kr ' + total;
+    }
   }
 
   // ---- Trip Complete Reset ----
   function resetComplete() {
-    // Reset stars
     var starBtns = $stars.querySelectorAll('.star-btn');
     starBtns.forEach(function(b) { b.classList.remove('active'); });
-    // Reset tips
     var tipBtns = $tipRow.querySelectorAll('.tip-btn');
     tipBtns.forEach(function(b) { b.classList.remove('active'); });
     tipBtns[0].classList.add('active');
-    // Reset comment
     var comment = document.querySelector('.comment-box');
     if (comment) comment.value = '';
   }
 
-  // ---- Event Listeners ----
-
-  // Home → Search
-  $homeSearch.addEventListener('click', function() { showScreen('search'); });
-
-  // Chips also go to search
-  document.querySelectorAll('.chip').forEach(function(chip) {
-    chip.addEventListener('click', function() { showScreen('search'); });
-  });
-
-  // Search back
-  $searchBack.addEventListener('click', function() { goBack('search'); });
-
-  // Destination input filter
-  $destInput.addEventListener('input', function() {
-    filterSuggestions(this.value);
-  });
-
-  // Suggestion click (event delegation on search results)
-  document.getElementById('search-results').addEventListener('click', function(e) {
-    var item = e.target.closest('.suggestion-item');
-    if (!item) return;
-    var name = item.getAttribute('data-name');
-    if (name) {
-      selectedDestination = name;
-      $destMarkerLabel.textContent = name;
-      if ($tripDestMarkerLabel) $tripDestMarkerLabel.textContent = name;
-      $tripDropoff.textContent = name;
-      showScreen('ride-options');
-    }
-  });
-
-  // Home recent places also navigate
-  document.querySelectorAll('#screen-home .place-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-      var name = this.querySelector('.place-name').textContent;
-      selectedDestination = name;
-      $destMarkerLabel.textContent = name;
-      if ($tripDestMarkerLabel) $tripDestMarkerLabel.textContent = name;
-      $tripDropoff.textContent = name;
-      showScreen('ride-options');
-    });
-  });
-
-  // Seat selector
+  // ---- Seat selector ----
   function updateSeatSelector() {
     $seatCount.textContent = requestedSeats;
     $seatMinus.disabled = requestedSeats <= 1;
     $seatPlus.disabled = requestedSeats >= 8;
-    // Dim ride options that don't have enough seats
     var options = $rideOptions.querySelectorAll('.ride-option');
     var selectedStillValid = false;
     options.forEach(function(opt) {
@@ -1708,13 +2343,155 @@
         if (opt.classList.contains('selected')) selectedStillValid = true;
       }
     });
-    // Auto-select first valid option if current selection was invalidated
     if (!selectedStillValid) {
       var firstValid = $rideOptions.querySelector('.ride-option:not([style*="pointer-events: none"])');
       if (firstValid) selectRide(firstValid);
     }
   }
 
+  // ---- Submit Rating ----
+  async function submitRating() {
+    if (!currentRideId) { showScreen('home'); return; }
+
+    // Get star rating
+    var activeStars = $stars.querySelectorAll('.star-btn.active');
+    var starCount = activeStars.length;
+    if (starCount === 0) starCount = 5; // default to 5 if none selected
+
+    // Get tip
+    var activeTip = $tipRow.querySelector('.tip-btn.active');
+    var tipAmount = activeTip ? parseInt(activeTip.getAttribute('data-tip'), 10) : 0;
+
+    // Get comment
+    var comment = document.querySelector('.comment-box');
+    var commentText = comment ? comment.value.trim() : null;
+
+    var result = await sb.rpc('rate_ride', {
+      p_ride_id: currentRideId,
+      p_stars: starCount,
+      p_tip_nok: tipAmount,
+      p_comment: commentText || null
+    });
+
+    if (result.error) {
+      console.error('rate_ride error:', result.error);
+    } else {
+      console.log('Rating submitted:', result.data);
+    }
+
+    // Reset state
+    currentRideId = null;
+    matchedDriver = null;
+    selectedRide = null;
+    selectedDestination = null;
+
+    showScreen('home');
+  }
+
+  // ---- Cancel Ride in DB ----
+  async function cancelRide() {
+    if (currentRideId) {
+      var result = await sb.rpc('cancel_ride', { p_ride_id: currentRideId });
+      if (result.error) {
+        console.error('cancel_ride error:', result.error);
+      } else {
+        console.log('Ride cancelled:', currentRideId);
+      }
+      currentRideId = null;
+      matchedDriver = null;
+    }
+  }
+
+  // ---- Nav Bar (bottom navigation) ----
+  function updateNavActive(screenName) {
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(function(item) {
+      var nav = item.getAttribute('data-nav');
+      item.classList.toggle('active', nav === screenName);
+    });
+  }
+
+  document.querySelectorAll('.bottom-nav .nav-item[data-nav]').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var target = this.getAttribute('data-nav');
+      if (target === 'home') {
+        showScreen('home');
+      } else if (target === 'account') {
+        populateAccount();
+        showScreen('account');
+      }
+      // activity & help — not implemented yet
+    });
+  });
+
+  // Populate account screen with user data
+  function populateAccount() {
+    if (!currentUser) return;
+    var name = (currentUser.user_metadata && currentUser.user_metadata.display_name)
+      || (currentUser.email && currentUser.email.split('@')[0])
+      || 'User';
+    var email = currentUser.email || '';
+    var initial = name.charAt(0).toUpperCase();
+
+    document.getElementById('account-avatar').textContent = initial;
+    document.getElementById('account-name').textContent = name;
+    document.getElementById('account-email').textContent = email;
+  }
+
+  // Sign out
+  document.getElementById('btn-signout').addEventListener('click', async function() {
+    await sb.auth.signOut();
+    currentUser = null;
+    // Show auth screen, hide app
+    document.getElementById('auth-screen').classList.remove('hidden');
+    document.getElementById('app').style.display = 'none';
+    // Reset to home screen
+    screens[currentScreen].classList.remove('active');
+    screens['home'].classList.add('active');
+    currentScreen = 'home';
+  });
+
+  // Override showScreen to also update nav
+  var _origShowScreen = showScreen;
+  showScreen = function(name) {
+    _origShowScreen(name);
+    // Map screen names to nav names
+    var navMap = { home: 'home', account: 'account' };
+    updateNavActive(navMap[name] || '');
+  };
+
+  // ---- Event Listeners ----
+
+  // Home → Search
+  $homeSearch.addEventListener('click', function() { showScreen('search'); });
+
+  // Chips go to search
+  document.querySelectorAll('.chip').forEach(function(chip) {
+    chip.addEventListener('click', function() { showScreen('search'); });
+  });
+
+  // Search back
+  $searchBack.addEventListener('click', function() { goBack('search'); });
+
+  // Destination input filter
+  $destInput.addEventListener('input', function() { filterSuggestions(this.value); });
+
+  // Suggestion click (event delegation)
+  document.getElementById('search-results').addEventListener('click', function(e) {
+    var item = e.target.closest('.suggestion-item');
+    if (!item) return;
+    var name = item.getAttribute('data-name');
+    if (name) selectDestination(name);
+  });
+
+  // Home recent places
+  document.querySelectorAll('#screen-home .place-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var name = this.querySelector('.place-name').textContent;
+      selectDestination(name);
+    });
+  });
+
+  // Seat controls
   $seatMinus.addEventListener('click', function() {
     if (requestedSeats > 1) { requestedSeats--; updateSeatSelector(); }
   });
@@ -1722,7 +2499,7 @@
     if (requestedSeats < 8) { requestedSeats++; updateSeatSelector(); }
   });
 
-  // Ride option select
+  // Ride option select (delegated)
   $rideOptions.addEventListener('click', function(e) {
     var option = e.target.closest('.ride-option');
     if (option && option.style.pointerEvents !== 'none') selectRide(option);
@@ -1731,22 +2508,24 @@
   // Ride back
   $rideBack.addEventListener('click', function() { goBack('ride-options'); });
 
-  // Confirm ride
+  // Confirm ride → matching
   $confirmBtn.addEventListener('click', function() { showScreen('matching'); });
 
   // Cancel matching
   $cancelMatching.addEventListener('click', function() {
     clearTimeout(matchingTimer);
+    cancelRide();
     showScreen('home');
   });
 
   // Cancel trip
   $cancelTrip.addEventListener('click', function() {
     clearInterval(countdownTimer);
+    cancelRide();
     showScreen('home');
   });
 
-  // Complete trip (demo)
+  // Complete trip
   $completeTripBtn.addEventListener('click', function() {
     clearInterval(countdownTimer);
     showScreen('complete');
@@ -1757,10 +2536,8 @@
     var btn = e.target.closest('.star-btn');
     if (!btn) return;
     var val = parseInt(btn.getAttribute('data-star'), 10);
-    var allStars = $stars.querySelectorAll('.star-btn');
-    allStars.forEach(function(b) {
-      var s = parseInt(b.getAttribute('data-star'), 10);
-      b.classList.toggle('active', s <= val);
+    $stars.querySelectorAll('.star-btn').forEach(function(b) {
+      b.classList.toggle('active', parseInt(b.getAttribute('data-star'), 10) <= val);
     });
   });
 
@@ -1768,19 +2545,46 @@
   $tipRow.addEventListener('click', function(e) {
     var btn = e.target.closest('.tip-btn');
     if (!btn) return;
-    var allTips = $tipRow.querySelectorAll('.tip-btn');
-    allTips.forEach(function(b) { b.classList.remove('active'); });
+    $tipRow.querySelectorAll('.tip-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
   });
 
-  // Done
-  $doneBtn.addEventListener('click', function() { showScreen('home'); });
+  // Done → submit rating to DB, then go home
+  $doneBtn.addEventListener('click', function() { submitRating(); });
 
-  // ---- Init ----
-  updateGreeting();
-  updateStatusTime();
-  setInterval(updateStatusTime, 10000);
+  // ---- App Init ----
+  async function initApp() {
+    updateGreeting();
+    updateStatusTime();
+    setInterval(updateStatusTime, 10000);
 
+    // User is already authenticated via the auth screen
+    if (!currentUser) {
+      var sessionResult = await sb.auth.getSession();
+      if (sessionResult.data.session) {
+        currentUser = sessionResult.data.session.user;
+      } else {
+        console.error('No authenticated user');
+        return;
+      }
+    }
+    console.log('Signed in as:', currentUser.email, currentUser.id);
+
+    // Load ride types from DB
+    var rtResult = await sb.from('ride_types')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order');
+
+    if (!rtResult.error && rtResult.data) {
+      rideTypes = rtResult.data;
+      console.log('Loaded', rideTypes.length, 'ride types from DB');
+    } else {
+      console.error('Failed to load ride types:', rtResult.error);
+    }
+  }
+
+  // initApp() is called by the auth flow (checkSession or handleSignIn/handleSignUp)
 })();
 </script>
 </body>

@@ -10,12 +10,7 @@ alter table public.rides
 
 comment on column public.rides.requested_seats is 'Number of seats the passenger requested for this ride';
 
--- Update seed vehicles with realistic seat counts
-update public.vehicles set available_seats = 4 where id = 'v1111111-1111-1111-1111-111111111111'; -- Toyota Camry (sedan)
-update public.vehicles set available_seats = 4 where id = 'v2222222-2222-2222-2222-222222222222'; -- Tesla Model 3 (sedan)
-update public.vehicles set available_seats = 4 where id = 'v3333333-3333-3333-3333-333333333333'; -- VW ID.4 (SUV)
-update public.vehicles set available_seats = 6 where id = 'v4444444-4444-4444-4444-444444444444'; -- Mercedes E-Class (sedan, long)
-update public.vehicles set available_seats = 7 where id = 'v5555555-5555-5555-5555-555555555555'; -- VW Multivan (van)
+-- Note: seed data already includes available_seats values in the INSERT statements.
 
 -- Update find_nearby_drivers to accept and filter by requested seats
 create or replace function public.find_nearby_drivers(
