@@ -10,7 +10,9 @@
     "db:migrate": "npx supabase migration up --local",
     "db:status": "npx supabase status",
     "db:studio": "open http://localhost:54323",
-    "dev": "npx supabase start && python3 -m http.server 3000",
+    "dev": "npx supabase start && python3 -m http.server 3001",
+    "serve": "python3 -m http.server 3001",
+    "serve:alt": "python3 -m http.server 3001",
     "functions:serve": "npx supabase functions serve"
   },
   "devDependencies": {

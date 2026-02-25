@@ -1209,6 +1209,171 @@
     padding: 20px;
   }
 
+  /* Sub-pages (Account stack) */
+  .subpage {
+    background: var(--bg-surface);
+    padding-top: 54px;
+    overflow-y: auto;
+  }
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-surface);
+    z-index: 5;
+    border-bottom: 1px solid var(--bg-surface-border);
+  }
+  .page-header h1 {
+    font-size: 20px;
+    font-weight: 700;
+    flex: 1;
+  }
+  .page-content {
+    padding: 20px;
+    padding-bottom: 100px;
+  }
+
+  /* Activity screen */
+  .activity-list { list-style: none; }
+  .activity-item {
+    background: var(--bg-surface-raised);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: default;
+  }
+  .activity-route {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .activity-meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .activity-status {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--bg-surface-border);
+  }
+  .activity-status.completed { color: var(--accent); }
+  .activity-status.cancelled { color: var(--text-muted); }
+  .activity-empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+  .activity-empty svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  /* Help screen */
+  .help-list { list-style: none; }
+  .help-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--bg-surface-border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .help-item:active { background: var(--bg-surface-raised); }
+  .help-item svg { width: 22px; height: 22px; color: var(--text-secondary); flex-shrink: 0; }
+  .help-item span { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+  .help-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 24px 0 8px;
+  }
+  .help-section-title:first-child { margin-top: 0; }
+
+  /* Edit Profile form */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--bg-surface-border);
+    border-radius: 10px;
+    font-size: 15px;
+    color: var(--text-primary);
+    font-family: inherit;
+  }
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  /* Payment methods list */
+  .payment-method-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: var(--bg-surface-raised);
+    border-radius: var(--radius-card);
+    margin-bottom: 12px;
+  }
+  .payment-method-item.default { border: 1px solid var(--accent); background: var(--accent-soft); }
+  .payment-method-item svg { width: 24px; height: 24px; color: var(--text-secondary); flex-shrink: 0; }
+  .payment-method-item .pm-label { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+  .payment-method-item .pm-default { font-size: 12px; color: var(--accent); margin-top: 2px; }
+  .add-payment-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    background: var(--bg-surface-raised);
+    border: 2px dashed var(--bg-surface-border);
+    border-radius: var(--radius-card);
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .add-payment-btn:hover { border-color: var(--text-muted); color: var(--text-secondary); }
+
+  /* Safety / Settings content */
+  .content-card {
+    background: var(--bg-surface-raised);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .content-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .content-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+
   /* Utility */
   .mt-12 { margin-top: 12px; }
   .mt-16 { margin-top: 16px; }
@@ -1723,22 +1888,22 @@
 
     <div class="account-section">
       <div class="account-menu">
-        <div class="account-menu-item">
+        <div class="account-menu-item" data-page="edit-profile">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span>Edit Profile</span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
-        <div class="account-menu-item">
+        <div class="account-menu-item" data-page="payment-methods">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
           <span>Payment Methods</span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
-        <div class="account-menu-item">
+        <div class="account-menu-item" data-page="safety">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span>Safety</span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
-        <div class="account-menu-item">
+        <div class="account-menu-item" data-page="settings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
           <span>Settings</span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -1764,13 +1929,140 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         <span class="nav-label">Activity</span>
       </div>
-      <div class="nav-item active" data-nav="account">
+      <div class="nav-item" data-nav="account">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span class="nav-label">Account</span>
       </div>
       <div class="nav-item" data-nav="help">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span class="nav-label">Help</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN: ACTIVITY (Ride history) ==================== -->
+  <div class="screen subpage" id="screen-activity">
+    <div class="page-header">
+      <h1>Activity</h1>
+    </div>
+    <div class="page-content">
+      <ul class="activity-list" id="activity-list">
+        <!-- Filled by JS from rides table -->
+      </ul>
+      <div class="activity-empty" id="activity-empty" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <p>No rides yet</p>
+        <p style="font-size:13px;margin-top:8px;">Your trip history will appear here.</p>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nav-label">Home</span></div>
+      <div class="nav-item active" data-nav="activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="nav-label">Activity</span></div>
+      <div class="nav-item" data-nav="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Account</span></div>
+      <div class="nav-item" data-nav="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="nav-label">Help</span></div>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN: HELP ==================== -->
+  <div class="screen subpage" id="screen-help">
+    <div class="page-header">
+      <h1>Help</h1>
+    </div>
+    <div class="page-content">
+      <div class="help-section-title">Getting started</div>
+      <ul class="help-list">
+        <li class="help-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>How to book a ride</span></li>
+        <li class="help-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Changing pickup or destination</span></li>
+        <li class="help-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span>Payment &amp; receipts</span></li>
+      </ul>
+      <div class="help-section-title">Safety</div>
+      <ul class="help-list">
+        <li class="help-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Safety tips</span></li>
+        <li class="help-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><span>Contact support</span></li>
+      </ul>
+      <div class="help-section-title">Account</div>
+      <ul class="help-list">
+        <li class="help-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>Email: support@ridego.no</span></li>
+      </ul>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nav-label">Home</span></div>
+      <div class="nav-item" data-nav="activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="nav-label">Activity</span></div>
+      <div class="nav-item" data-nav="account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Account</span></div>
+      <div class="nav-item active" data-nav="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="nav-label">Help</span></div>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN: EDIT PROFILE ==================== -->
+  <div class="screen subpage" id="screen-edit-profile">
+    <div class="page-header">
+      <button class="back-btn" id="edit-profile-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+      <h1>Edit Profile</h1>
+    </div>
+    <div class="page-content">
+      <div class="form-group">
+        <label>Display name</label>
+        <input type="text" id="profile-display-name" placeholder="Your name" maxlength="100">
+      </div>
+      <div class="form-group">
+        <label>Phone (optional)</label>
+        <input type="tel" id="profile-phone" placeholder="+47 xxx xx xxx">
+      </div>
+      <button class="btn-primary" id="profile-save-btn">Save changes</button>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN: PAYMENT METHODS ==================== -->
+  <div class="screen subpage" id="screen-payment-methods">
+    <div class="page-header">
+      <button class="back-btn" id="payment-methods-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+      <h1>Payment Methods</h1>
+    </div>
+    <div class="page-content">
+      <div id="payment-methods-list"><!-- Filled by JS --></div>
+      <button class="add-payment-btn" id="add-payment-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add payment method
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN: SAFETY ==================== -->
+  <div class="screen subpage" id="screen-safety">
+    <div class="page-header">
+      <button class="back-btn" id="safety-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+      <h1>Safety</h1>
+    </div>
+    <div class="page-content">
+      <div class="content-card">
+        <h3>Share your trip</h3>
+        <p>Use &quot;Share trip status&quot; during a ride so friends or family can see your live location and ETA.</p>
+      </div>
+      <div class="content-card">
+        <h3>Verify your driver</h3>
+        <p>Check the driver&#39;s name, photo, and license plate before getting in. The app shows these details when your ride is matched.</p>
+      </div>
+      <div class="content-card">
+        <h3>Emergency</h3>
+        <p>In an emergency, call 112 (Norway). You can also use your phone&#39;s emergency features at any time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN: SETTINGS ==================== -->
+  <div class="screen subpage" id="screen-settings">
+    <div class="page-header">
+      <button class="back-btn" id="settings-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+      <h1>Settings</h1>
+    </div>
+    <div class="page-content">
+      <div class="content-card">
+        <h3>Notifications</h3>
+        <p>Ride updates and driver arrival alerts. Manage these in your device settings.</p>
+      </div>
+      <div class="content-card">
+        <h3>Language</h3>
+        <p>App language follows your device. Oslo area supported in Norwegian and English.</p>
       </div>
     </div>
   </div>
@@ -1918,7 +2210,13 @@
     matching: document.getElementById('screen-matching'),
     trip: document.getElementById('screen-trip'),
     complete: document.getElementById('screen-complete'),
-    account: document.getElementById('screen-account')
+    account: document.getElementById('screen-account'),
+    activity: document.getElementById('screen-activity'),
+    help: document.getElementById('screen-help'),
+    'edit-profile': document.getElementById('screen-edit-profile'),
+    'payment-methods': document.getElementById('screen-payment-methods'),
+    safety: document.getElementById('screen-safety'),
+    settings: document.getElementById('screen-settings')
   };
 
   var $greeting = document.getElementById('greeting');
@@ -2418,10 +2716,30 @@
       } else if (target === 'account') {
         populateAccount();
         showScreen('account');
+      } else if (target === 'activity') {
+        loadActivityRides();
+        showScreen('activity');
+      } else if (target === 'help') {
+        showScreen('help');
       }
-      // activity & help — not implemented yet
     });
   });
+
+  // Account menu items → sub-pages
+  document.querySelectorAll('#screen-account .account-menu-item[data-page]').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var page = this.getAttribute('data-page');
+      if (page === 'edit-profile') loadProfileForm();
+      if (page === 'payment-methods') loadPaymentMethods();
+      showScreen(page);
+    });
+  });
+
+  // Back from sub-pages to Account
+  document.getElementById('edit-profile-back').addEventListener('click', function() { showScreen('account'); });
+  document.getElementById('payment-methods-back').addEventListener('click', function() { showScreen('account'); });
+  document.getElementById('safety-back').addEventListener('click', function() { showScreen('account'); });
+  document.getElementById('settings-back').addEventListener('click', function() { showScreen('account'); });
 
   // Populate account screen with user data
   function populateAccount() {
@@ -2436,6 +2754,117 @@
     document.getElementById('account-name').textContent = name;
     document.getElementById('account-email').textContent = email;
   }
+
+  // Load activity (ride history) from DB
+  async function loadActivityRides() {
+    var listEl = document.getElementById('activity-list');
+    var emptyEl = document.getElementById('activity-empty');
+    if (!currentUser) {
+      listEl.innerHTML = '';
+      emptyEl.style.display = 'block';
+      return;
+    }
+    var result = await sb.from('rides')
+      .select('id, pickup_name, dropoff_name, status, estimated_fare_nok, final_fare_nok, requested_at')
+      .eq('passenger_id', currentUser.id)
+      .order('requested_at', { ascending: false })
+      .limit(50);
+    if (result.error) {
+      listEl.innerHTML = '';
+      emptyEl.style.display = 'block';
+      emptyEl.querySelector('p').textContent = 'Could not load rides.';
+      return;
+    }
+    var rides = result.data || [];
+    if (rides.length === 0) {
+      listEl.innerHTML = '';
+      emptyEl.style.display = 'block';
+      emptyEl.querySelector('p').textContent = 'No rides yet';
+      return;
+    }
+    emptyEl.style.display = 'none';
+    listEl.innerHTML = rides.map(function(r) {
+      var route = r.pickup_name + ' → ' + r.dropoff_name;
+      var fare = (r.final_fare_nok != null ? r.final_fare_nok : r.estimated_fare_nok);
+      var dateStr = r.requested_at ? new Date(r.requested_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      var isCompleted = r.status === 'completed';
+      var statusClass = isCompleted ? 'completed' : 'cancelled';
+      var statusText = isCompleted ? ('kr ' + Math.round(fare)) : (r.status || '—');
+      return '<li class="activity-item">' +
+        '<div class="activity-route">' + escapeHtml(route) + '</div>' +
+        '<div class="activity-meta"><span>' + escapeHtml(dateStr) + '</span><span>kr ' + Math.round(fare) + '</span></div>' +
+        '<div class="activity-status ' + statusClass + '">' + escapeHtml(statusText) + '</div>' +
+        '</li>';
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    if (!s) return '';
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  // Load profile form for Edit Profile
+  async function loadProfileForm() {
+    if (!currentUser) return;
+    var res = await sb.from('profiles').select('display_name, phone').eq('id', currentUser.id).single();
+    var displayName = '';
+    var phone = '';
+    if (!res.error && res.data) {
+      displayName = res.data.display_name || '';
+      phone = res.data.phone || '';
+    } else {
+      displayName = (currentUser.user_metadata && currentUser.user_metadata.display_name) || (currentUser.email && currentUser.email.split('@')[0]) || '';
+    }
+    document.getElementById('profile-display-name').value = displayName;
+    document.getElementById('profile-phone').value = phone;
+  }
+
+  // Save profile
+  document.getElementById('profile-save-btn').addEventListener('click', async function() {
+    if (!currentUser) return;
+    var btn = this;
+    var displayName = document.getElementById('profile-display-name').value.trim();
+    var phone = document.getElementById('profile-phone').value.trim();
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+    var res = await sb.from('profiles').update({ display_name: displayName || null, phone: phone || null, updated_at: new Date().toISOString() }).eq('id', currentUser.id).select();
+    btn.disabled = false;
+    btn.textContent = 'Save changes';
+    if (res.error) {
+      console.error('Profile update failed:', res.error);
+      return;
+    }
+    if (currentUser.user_metadata) currentUser.user_metadata.display_name = displayName;
+    else currentUser.user_metadata = { display_name: displayName };
+    populateAccount();
+    showScreen('account');
+  });
+
+  // Load payment methods for Payment Methods screen
+  async function loadPaymentMethods() {
+    var container = document.getElementById('payment-methods-list');
+    if (!currentUser) {
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:14px;">Sign in to manage payment methods.</p>';
+      return;
+    }
+    var res = await sb.from('payment_methods').select('id, label, is_default').eq('user_id', currentUser.id).order('is_default', { ascending: false });
+    if (res.error || !res.data || res.data.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:14px;">No payment methods added yet.</p>';
+      return;
+    }
+    container.innerHTML = res.data.map(function(pm) {
+      var defaultLabel = pm.is_default ? '<div class="pm-default">Default</div>' : '';
+      return '<div class="payment-method-item ' + (pm.is_default ? 'default' : '') + '">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>' +
+        '<div><div class="pm-label">' + escapeHtml(pm.label) + '</div>' + defaultLabel + '</div></div>';
+    }).join('');
+  }
+
+  document.getElementById('add-payment-btn').addEventListener('click', function() {
+    alert('Adding a payment method will be available soon. For now, rides use the default card on file.');
+  });
 
   // Sign out
   document.getElementById('btn-signout').addEventListener('click', async function() {
@@ -2455,7 +2884,7 @@
   showScreen = function(name) {
     _origShowScreen(name);
     // Map screen names to nav names
-    var navMap = { home: 'home', account: 'account' };
+    var navMap = { home: 'home', account: 'account', activity: 'activity', help: 'help' };
     updateNavActive(navMap[name] || '');
   };
 
