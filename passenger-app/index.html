@@ -3101,6 +3101,31 @@
     }
   }
 
+  // ---- Fetch real route from Google Routes API (via edge function) ----
+  var cachedRoute = null; // { distance_km, duration_min, polyline }
+
+  async function fetchRoute(pickupLat, pickupLng, dropoffLat, dropoffLng) {
+    try {
+      var res = await sb.functions.invoke('get-route', {
+        body: {
+          pickup_lat: pickupLat,
+          pickup_lng: pickupLng,
+          dropoff_lat: dropoffLat,
+          dropoff_lng: dropoffLng
+        }
+      });
+      if (res.error) {
+        console.warn('get-route error, falling back to straight-line:', res.error);
+        return null;
+      }
+      console.log('Google Routes API result:', res.data);
+      return res.data; // { distance_km, duration_min, polyline }
+    } catch (err) {
+      console.warn('get-route fetch failed, falling back to straight-line:', err);
+      return null;
+    }
+  }
+
   // ---- Load ride options with real fares from DB ----
   async function loadRideOptions() {
     if (!selectedDestination || rideTypes.length === 0) return;
@@ -3110,15 +3135,27 @@
     $confirmBtn.disabled = true;
     setButtonLoading($confirmBtn, true, 'Calculating...');
 
-    // Get fare estimates for all ride types in parallel
+    // 1. Get real route from Google Routes API
+    cachedRoute = await fetchRoute(
+      PICKUP.lat, PICKUP.lng,
+      selectedDestination.lat, selectedDestination.lng
+    );
+
+    // 2. Get fare estimates for all ride types, passing real route data if available
     var estimates = await Promise.all(rideTypes.map(function(rt) {
-      return sb.rpc('estimate_fare_latlng', {
+      var rpcParams = {
         p_ride_type_id: rt.id,
         p_pickup_lat: PICKUP.lat,
         p_pickup_lng: PICKUP.lng,
         p_dropoff_lat: selectedDestination.lat,
         p_dropoff_lng: selectedDestination.lng
-      }).then(function(res) {
+      };
+      // Pass real route data to get accurate fares
+      if (cachedRoute) {
+        rpcParams.p_real_distance_km = cachedRoute.distance_km;
+        rpcParams.p_real_duration_min = cachedRoute.duration_min;
+      }
+      return sb.rpc('estimate_fare_latlng', rpcParams).then(function(res) {
         return { rideType: rt, estimate: res.error ? null : res.data };
       });
     }));
@@ -3215,6 +3252,16 @@
     currentRideId = rpcResult.data.ride_id;
     console.log('Ride created:', currentRideId);
     subscribeToRide(currentRideId);
+
+    // Store polyline from Google Routes on the ride record (if available)
+    if (cachedRoute && cachedRoute.polyline) {
+      sb.from('rides')
+        .update({ route_polyline: cachedRoute.polyline })
+        .eq('id', currentRideId)
+        .then(function(res) {
+          if (res.error) console.warn('Could not save polyline:', res.error);
+        });
+    }
 
     // 2. Find nearby drivers
     $matchingSub.textContent = 'Found ride, matching driver...';
