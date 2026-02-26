@@ -1381,6 +1381,119 @@
   .mb-12 { margin-bottom: 12px; }
   .mb-16 { margin-bottom: 16px; }
   .gap-10 { gap: 10px; }
+
+  /* Toast Notifications */
+  .toast-container { position: absolute; top: 60px; left: 16px; right: 16px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+  .toast { padding: 14px 18px; border-radius: 12px; font-size: 14px; font-weight: 500; color: #fff; pointer-events: auto; animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .toast.success { background: #22c55e; }
+  .toast.error { background: var(--danger); }
+  .toast.info { background: var(--bg-surface-raised); color: var(--text-primary); border: 1px solid var(--bg-surface-border); }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
+
+  /* Skeleton Loading */
+  .skeleton { background: var(--bg-surface-raised); border-radius: 12px; position: relative; overflow: hidden; }
+  .skeleton::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); animation: shimmer 1.5s infinite; }
+  @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .skeleton-ride { height: 80px; margin-bottom: 10px; }
+  .skeleton-place { height: 56px; margin-bottom: 8px; }
+  .skeleton-activity { height: 72px; margin-bottom: 10px; }
+  .skeleton-text { height: 16px; margin-bottom: 8px; width: 60%; }
+
+  /* Button Loading */
+  .btn-loading { pointer-events: none; opacity: 0.7; }
+  .btn-loading .btn-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
+
+  /* Micro-interactions */
+  .ride-option, .place-item, .suggestion-item, .chip, .account-menu-item, .activity-item { transition: transform 0.1s ease, background 0.2s ease; }
+  .ride-option:active, .place-item:active, .suggestion-item:active, .chip:active, .account-menu-item:active, .activity-item:active { transform: scale(0.97); }
+  .bottom-sheet { transition: transform 0.3s ease; }
+
+  /* Settings */
+  .settings-section { margin-bottom: 24px; }
+  .settings-section-title { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--bg-surface-border); }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label { font-size: 15px; color: var(--text-primary); }
+  .setting-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .toggle-switch { position: relative; width: 48px; height: 28px; flex-shrink: 0; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-surface-raised); border-radius: 28px; transition: 0.3s; }
+  .toggle-slider::before { content: ''; position: absolute; height: 22px; width: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+  .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+  /* Safety */
+  .emergency-btn { display: flex; align-items: center; gap: 14px; background: var(--danger); color: white; padding: 16px 20px; border-radius: 16px; margin-bottom: 20px; text-decoration: none; transition: transform 0.1s; }
+  .emergency-btn:active { transform: scale(0.98); }
+  .safety-card { background: var(--bg-surface-raised); border-radius: 16px; padding: 18px; margin-bottom: 14px; }
+  .safety-card-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .safety-tips-list { padding-left: 20px; margin: 0; }
+  .safety-tips-list li { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 6px; }
+  .emergency-contact-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--bg-surface-border); }
+  .emergency-contact-item:last-child { border-bottom: none; }
+
+  /* Add Payment */
+  .form-label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .card-brand-selector { display: flex; gap: 8px; margin-top: 8px; }
+  .card-brand-btn { flex: 1; padding: 10px; border-radius: 10px; background: var(--bg-surface-raised); color: var(--text-secondary); border: 2px solid transparent; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+  .card-brand-btn.selected { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+  /* Success animation */
+  .complete-check { animation: bounceIn 0.5s ease; }
+  @keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
+
+  /* Empty states */
+  .empty-state { text-align: center; padding: 40px 20px; }
+  .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state-text { color: var(--text-muted); font-size: 15px; }
+
+  /* Location Permission Modal */
+  .location-modal { position: absolute; inset: 0; z-index: 200; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; padding: 30px; backdrop-filter: blur(4px); }
+  .location-modal-card { background: var(--bg-surface); border-radius: 20px; padding: 32px 24px 24px; text-align: center; width: 100%; animation: modalPop 0.3s ease; }
+  @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .location-modal-icon { font-size: 48px; margin-bottom: 16px; }
+  .location-modal-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  .location-modal-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 24px; }
+  .location-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+  .location-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
+  .location-status-dot.active { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.5); animation: loc-pulse 2s infinite; }
+  @keyframes loc-pulse { 0%, 100% { box-shadow: 0 0 6px rgba(34,197,94,0.5); } 50% { box-shadow: 0 0 12px rgba(34,197,94,0.8); } }
+
+  /* Chat Panel */
+  .chat-overlay { position: absolute; inset: 0; z-index: 50; display: flex; flex-direction: column; background: var(--bg-primary); transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); pointer-events: none; }
+  .chat-overlay.open { transform: translateY(0); pointer-events: auto; }
+  .chat-header { display: flex; align-items: center; gap: 12px; padding: 54px 20px 14px; background: var(--bg-surface); border-bottom: 1px solid var(--bg-surface-border, rgba(255,255,255,0.06)); flex-shrink: 0; }
+  .chat-header h3 { flex: 1; font-size: 17px; font-weight: 700; }
+  .chat-close { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface-raised, rgba(255,255,255,0.08)); border: none; border-radius: 50%; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .chat-close svg { width: 18px; height: 18px; color: var(--text-primary); }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; -webkit-overflow-scrolling: touch; }
+  .chat-bubble { max-width: 80%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.4; word-wrap: break-word; }
+  .chat-bubble.sent { align-self: flex-end; background: var(--accent); color: #003C1E; border-bottom-right-radius: 4px; }
+  .chat-bubble.received { align-self: flex-start; background: var(--bg-surface-raised, rgba(255,255,255,0.08)); color: var(--text-primary); border-bottom-left-radius: 4px; }
+  .chat-bubble-time { font-size: 11px; opacity: 0.6; margin-top: 4px; }
+  .chat-empty { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px; }
+  .chat-input-row { display: flex; align-items: center; gap: 10px; padding: 12px 20px 28px; background: var(--bg-surface); border-top: 1px solid var(--bg-surface-border, rgba(255,255,255,0.06)); flex-shrink: 0; }
+  .chat-input { flex: 1; background: var(--bg-surface-raised, rgba(255,255,255,0.08)); border: none; border-radius: 20px; padding: 12px 16px; font-size: 15px; color: var(--text-primary); font-family: inherit; outline: none; min-height: 44px; resize: none; }
+  .chat-input::placeholder { color: var(--text-muted); }
+  .chat-send-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; transition: opacity 0.2s, transform 0.1s; }
+  .chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .chat-send-btn:active:not(:disabled) { transform: scale(0.92); }
+  .chat-send-btn svg { width: 20px; height: 20px; color: #003C1E; }
+  .msg-badge { background: var(--danger, #ef4444); color: #fff; font-size: 11px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px; margin-left: 6px; }
+  .msg-badge:empty { display: none; }
+
+  /* Active Ride Banner */
+  .active-ride-banner { display: none; background: var(--bg-surface); border: 1px solid var(--accent); border-radius: 16px; padding: 14px 16px; margin-bottom: 16px; animation: modalPop 0.3s ease; }
+  .active-ride-banner.visible { display: block; }
+  .arb-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .arb-pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); animation: loc-pulse 2s infinite; flex-shrink: 0; }
+  .arb-title { font-size: 14px; font-weight: 700; color: var(--accent); }
+  .arb-route { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .arb-status { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+  .arb-actions { display: flex; gap: 10px; }
+  .arb-actions .btn-primary { flex: 1; padding: 10px; font-size: 14px; }
+  .arb-actions .btn-outline { flex: 1; padding: 10px; font-size: 14px; text-align: center; }
 </style>
 </head>
 <body>
@@ -1437,6 +1550,8 @@
 
 <div class="phone-frame" id="app" style="display:none;">
 
+  <div class="toast-container" id="toast-container"></div>
+
   <!-- Status Bar -->
   <div class="status-bar" id="status-bar">
     <span class="status-bar-time" id="status-time">9:41</span>
@@ -1463,6 +1578,24 @@
     <div class="bottom-sheet" style="height:48%;padding-bottom:80px;">
       <div class="sheet-handle"></div>
       <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;" id="greeting">Good evening, Alex 👋</h2>
+      <div class="location-status" id="location-status">
+        <div class="location-status-dot" id="location-dot"></div>
+        <span id="location-status-text">Location unavailable</span>
+      </div>
+      <!-- Active Ride Banner -->
+      <div class="active-ride-banner" id="active-ride-banner">
+        <div class="arb-header">
+          <div class="arb-pulse"></div>
+          <span class="arb-title">Ride in progress</span>
+        </div>
+        <div class="arb-route" id="arb-route">Nydalen → Aker Brygge</div>
+        <div class="arb-status" id="arb-status">Driver is arriving</div>
+        <div class="arb-actions">
+          <button class="btn-primary" id="arb-resume">Resume</button>
+          <button class="btn-outline" id="arb-cancel">Cancel Ride</button>
+        </div>
+      </div>
+
       <div class="search-bar mb-16" id="home-search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <span>Where to?</span>
@@ -1474,21 +1607,21 @@
       </div>
       <div>
         <ul class="place-list">
-          <li class="place-item">
+          <li class="place-item" data-name="Aker Brygge" data-lat="59.9075" data-lng="10.7295" data-address="Brynjulf Bulls plass 6, Oslo">
             <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
             <div class="place-info">
               <div class="place-name">Aker Brygge</div>
               <div class="place-address">Brynjulf Bulls plass 6, Oslo</div>
             </div>
           </li>
-          <li class="place-item">
+          <li class="place-item" data-name="Oslo Sentralstasjon" data-lat="59.9111" data-lng="10.7528" data-address="Jernbanetorget 1, Oslo">
             <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
             <div class="place-info">
               <div class="place-name">Oslo Sentralstasjon</div>
               <div class="place-address">Jernbanetorget 1, Oslo</div>
             </div>
           </li>
-          <li class="place-item">
+          <li class="place-item" data-name="Grünerløkka" data-lat="59.9225" data-lng="10.7590" data-address="Thorvald Meyers gate, Oslo">
             <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
             <div class="place-info">
               <div class="place-name">Grünerløkka</div>
@@ -1769,14 +1902,15 @@
           </div>
         </div>
 
-        <div class="action-row">
-          <button class="btn-outline">
+        <div class="action-row" id="trip-action-row">
+          <button class="btn-outline" id="trip-call-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
             Call
           </button>
-          <button class="btn-outline">
+          <button class="btn-outline" id="trip-message-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
             Message
+            <span class="msg-badge" id="msg-badge"></span>
           </button>
         </div>
 
@@ -1812,6 +1946,25 @@
         <button class="demo-complete-btn" id="complete-trip-btn">▶ Complete Trip (Demo)</button>
 
         <div style="height:20px"></div>
+      </div>
+    </div>
+
+    <!-- Chat Overlay -->
+    <div class="chat-overlay" id="chat-overlay">
+      <div class="chat-header">
+        <button class="chat-close" id="chat-close-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <h3 id="chat-driver-name">Chat with Driver</h3>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-empty" id="chat-empty">Send a message to your driver</div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" type="text" placeholder="Type a message..." maxlength="1000" autocomplete="off">
+        <button class="chat-send-btn" id="chat-send-btn" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -2027,6 +2180,37 @@
     </div>
   </div>
 
+  <!-- ==================== SCREEN: ADD PAYMENT ==================== -->
+  <div class="screen subpage" id="screen-add-payment">
+    <div class="page-header">
+      <button class="back-btn" id="add-payment-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+      <h1>Add Payment</h1>
+    </div>
+    <div class="page-content">
+      <div style="margin-bottom: 20px;">
+        <label class="form-label">Card Brand</label>
+        <div class="card-brand-selector" id="card-brand-selector">
+          <button class="card-brand-btn selected" data-brand="visa">Visa</button>
+          <button class="card-brand-btn" data-brand="mastercard">Mastercard</button>
+          <button class="card-brand-btn" data-brand="amex">Amex</button>
+        </div>
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label class="form-label">Card Label</label>
+        <input type="text" id="new-card-label" class="auth-input" placeholder="e.g. Personal Visa" style="margin-top: 6px;">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label class="form-label">Last 4 Digits</label>
+        <input type="text" id="new-card-last4" class="auth-input" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="1234" style="margin-top: 6px;">
+      </div>
+      <div style="margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" id="new-card-default">
+        <label for="new-card-default" style="color: var(--text-secondary); font-size: 14px;">Set as default payment method</label>
+      </div>
+      <button class="btn-primary" style="width: 100%;" id="save-card-btn">Add Card</button>
+    </div>
+  </div>
+
   <!-- ==================== SCREEN: SAFETY ==================== -->
   <div class="screen subpage" id="screen-safety">
     <div class="page-header">
@@ -2034,17 +2218,36 @@
       <h1>Safety</h1>
     </div>
     <div class="page-content">
-      <div class="content-card">
-        <h3>Share your trip</h3>
-        <p>Use &quot;Share trip status&quot; during a ride so friends or family can see your live location and ETA.</p>
+      <a href="tel:112" class="emergency-btn">
+        <span style="font-size: 24px;">🚨</span>
+        <div>
+          <div style="font-weight: 600; font-size: 16px;">Emergency Call 112</div>
+          <div style="font-size: 13px; opacity: 0.8;">Contact emergency services</div>
+        </div>
+      </a>
+      <div class="safety-card">
+        <div class="safety-card-title">🛡️ Emergency Contacts</div>
+        <div id="emergency-contacts-list"></div>
+        <div style="display: flex; gap: 8px; margin-top: 12px;">
+          <input type="text" id="emergency-name" placeholder="Name" class="auth-input" style="flex: 1; margin: 0; font-size: 14px; padding: 10px 12px;">
+          <input type="tel" id="emergency-phone" placeholder="Phone" class="auth-input" style="flex: 1; margin: 0; font-size: 14px; padding: 10px 12px;">
+          <button class="btn-primary" style="padding: 10px 16px; white-space: nowrap; font-size: 13px;" id="add-emergency-btn">Add</button>
+        </div>
       </div>
-      <div class="content-card">
-        <h3>Verify your driver</h3>
-        <p>Check the driver&#39;s name, photo, and license plate before getting in. The app shows these details when your ride is matched.</p>
+      <div class="safety-card">
+        <div class="safety-card-title">📋 Safety Tips</div>
+        <ul class="safety-tips-list">
+          <li>Always verify your driver's name and car details before getting in</li>
+          <li>Share your trip status with a trusted contact</li>
+          <li>Sit in the back seat when riding alone</li>
+          <li>Trust your instincts — cancel if something feels wrong</li>
+          <li>Keep your phone charged during trips</li>
+        </ul>
       </div>
-      <div class="content-card">
-        <h3>Emergency</h3>
-        <p>In an emergency, call 112 (Norway). You can also use your phone&#39;s emergency features at any time.</p>
+      <div class="safety-card">
+        <div class="safety-card-title">📍 Trip Sharing</div>
+        <p style="color: var(--text-secondary); font-size: 14px; margin: 0 0 12px;">Share your live trip status with friends and family during active rides.</p>
+        <button class="btn-outline" style="width: 100%;" id="share-trip-safety-btn">Share Current Trip</button>
       </div>
     </div>
   </div>
@@ -2056,14 +2259,76 @@
       <h1>Settings</h1>
     </div>
     <div class="page-content">
-      <div class="content-card">
-        <h3>Notifications</h3>
-        <p>Ride updates and driver arrival alerts. Manage these in your device settings.</p>
+      <div class="settings-section">
+        <h3 class="settings-section-title">Preferences</h3>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Push Notifications</div>
+            <div class="setting-desc">Receive ride updates and promotions</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-notifications" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Sound Effects</div>
+            <div class="setting-desc">Play sounds for ride events</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-sounds" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Email Receipts</div>
+            <div class="setting-desc">Receive ride receipts via email</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-receipts" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
       </div>
-      <div class="content-card">
-        <h3>Language</h3>
-        <p>App language follows your device. Oslo area supported in Norwegian and English.</p>
+      <div class="settings-section">
+        <h3 class="settings-section-title">About</h3>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">App Version</div>
+            <div class="setting-desc">RideGo Passenger v1.0.0</div>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Terms of Service</div>
+            <div class="setting-desc">View our terms and conditions</div>
+          </div>
+          <span style="color: var(--text-muted);">›</span>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Privacy Policy</div>
+            <div class="setting-desc">How we handle your data</div>
+          </div>
+          <span style="color: var(--text-muted);">›</span>
+        </div>
       </div>
+      <div class="settings-section">
+        <button class="btn-text-danger" id="delete-account-btn" style="width: 100%; padding: 14px; text-align: center; font-size: 15px;">Delete Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Permission Modal -->
+  <div class="location-modal" id="location-modal" style="display:none;">
+    <div class="location-modal-card">
+      <div class="location-modal-icon">📍</div>
+      <h3>Allow "RideGo" to use your location?</h3>
+      <p>We use your location to find your pickup point and show nearby drivers.</p>
+      <button class="btn-primary" style="width:100%;" id="location-allow-btn">While Using the App</button>
+      <button class="btn-outline" style="width:100%;margin-top:10px;" id="location-deny-btn">Don't Allow</button>
     </div>
   </div>
 
@@ -2079,6 +2344,329 @@
   var SUPABASE_URL = window.__RIDEGO_SUPABASE_URL || 'https://plpkelkbwcyuglaghsfk.supabase.co';
   var SUPABASE_KEY = window.__RIDEGO_SUPABASE_KEY || 'sb_publishable_anPF5rXktq-YMpHzihweYg_cf6VhRlq';
   var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ---- Toast & Button Helpers ----
+  function showToast(message, type) {
+    type = type || 'info';
+    var container = document.getElementById('toast-container');
+    var toast = document.createElement('div');
+    toast.className = 'toast ' + type;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 3000);
+  }
+
+  function setButtonLoading(btn, loading, text) {
+    if (loading) {
+      btn._originalText = btn.textContent;
+      btn.innerHTML = '<span class="btn-spinner"></span>' + (text || 'Loading...');
+      btn.classList.add('btn-loading');
+    } else {
+      btn.textContent = text || btn._originalText || 'Done';
+      btn.classList.remove('btn-loading');
+    }
+  }
+
+  function haptic(ms) { if (navigator.vibrate) navigator.vibrate(ms || 10); }
+
+  // ---- Real-time ride subscription ----
+  function subscribeToRide(rideId) {
+    if (window._rideSubscription) {
+      window._rideSubscription.unsubscribe();
+    }
+    window._rideSubscription = sb.channel('ride-' + rideId)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'rides', filter: 'id=eq.' + rideId }, function(payload) {
+        var ride = payload.new;
+        if (ride.status === 'driver_assigned' && currentScreen === 'matching') {
+          showToast('Driver is on the way!', 'success');
+        } else if (ride.status === 'completed') {
+          showToast('Trip completed!', 'success');
+        } else if (ride.status === 'cancelled') {
+          showToast('Ride was cancelled', 'info');
+        }
+      })
+      .subscribe();
+  }
+
+  function unsubscribeFromRide() {
+    if (window._rideSubscription) {
+      window._rideSubscription.unsubscribe();
+      window._rideSubscription = null;
+    }
+  }
+
+  // ---- In-Trip Chat ----
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatChatTime(isoStr) {
+    var d = new Date(isoStr);
+    return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+  }
+
+  function openChat() {
+    isChatOpen = true;
+    document.getElementById('chat-overlay').classList.add('open');
+    unreadCount = 0;
+    document.getElementById('msg-badge').textContent = '';
+    if (matchedDriver) {
+      document.getElementById('chat-driver-name').textContent = 'Chat with ' + matchedDriver.display_name;
+    }
+    setTimeout(function() { document.getElementById('chat-input').focus(); }, 350);
+    var msgContainer = document.getElementById('chat-messages');
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+    if (chatMessages.length === 0 && !chatSubscription) {
+      loadChatMessages();
+      subscribeToChatMessages();
+    }
+  }
+
+  function closeChat() {
+    isChatOpen = false;
+    document.getElementById('chat-overlay').classList.remove('open');
+    document.getElementById('chat-input').blur();
+  }
+
+  async function loadChatMessages() {
+    if (!currentRideId) return;
+    var result = await sb.from('ride_messages')
+      .select('id, sender_type, message, created_at')
+      .eq('ride_id', currentRideId)
+      .order('created_at', { ascending: true })
+      .limit(100);
+    if (result.error) {
+      console.error('loadChatMessages error:', result.error);
+      showToast('Could not load messages', 'error');
+      return;
+    }
+    chatMessages = result.data || [];
+    renderChatMessages();
+  }
+
+  function renderChatMessages() {
+    var container = document.getElementById('chat-messages');
+    var emptyEl = document.getElementById('chat-empty');
+    if (chatMessages.length === 0) {
+      emptyEl.style.display = '';
+      // Remove any bubbles
+      container.querySelectorAll('.chat-bubble').forEach(function(b) { b.remove(); });
+      return;
+    }
+    emptyEl.style.display = 'none';
+    var html = '';
+    chatMessages.forEach(function(msg) {
+      var isMine = msg.sender_type === 'passenger';
+      var cls = isMine ? 'sent' : 'received';
+      var time = formatChatTime(msg.created_at);
+      html += '<div class="chat-bubble ' + cls + '"><div>' + escapeHtml(msg.message) + '</div><div class="chat-bubble-time">' + time + '</div></div>';
+    });
+    // Keep empty el (hidden) + add bubbles
+    container.innerHTML = '<div class="chat-empty" id="chat-empty" style="display:none;">Send a message to your driver</div>' + html;
+    container.scrollTop = container.scrollHeight;
+  }
+
+  async function sendChatMessage() {
+    var input = document.getElementById('chat-input');
+    var text = input.value.trim();
+    if (!text) return;
+    if (!currentRideId || !currentUser) {
+      showToast('Ride is no longer active', 'info');
+      closeChat();
+      return;
+    }
+    var sendBtn = document.getElementById('chat-send-btn');
+    sendBtn.disabled = true;
+
+    // Optimistic update
+    chatMessages.push({ id: 'temp-' + Date.now(), sender_type: 'passenger', message: text, created_at: new Date().toISOString() });
+    renderChatMessages();
+    input.value = '';
+
+    var result = await sb.from('ride_messages').insert({
+      ride_id: currentRideId,
+      sender_type: 'passenger',
+      message: text
+    });
+
+    if (result.error) {
+      console.error('sendChatMessage error:', result.error);
+      showToast('Failed to send message', 'error');
+      // Remove optimistic message
+      chatMessages = chatMessages.filter(function(m) { return !String(m.id).startsWith('temp-'); });
+      renderChatMessages();
+    }
+    sendBtn.disabled = !input.value.trim();
+  }
+
+  function subscribeToChatMessages() {
+    if (!currentRideId) return;
+    if (chatSubscription) { chatSubscription.unsubscribe(); }
+    chatSubscription = sb.channel('chat-' + currentRideId)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'ride_messages',
+        filter: 'ride_id=eq.' + currentRideId
+      }, function(payload) {
+        var msg = payload.new;
+        // Deduplicate
+        if (chatMessages.some(function(m) { return m.id === msg.id; })) return;
+        // Remove optimistic temp messages from same sender
+        chatMessages = chatMessages.filter(function(m) { return !String(m.id).startsWith('temp-'); });
+        chatMessages.push(msg);
+        renderChatMessages();
+        if (!isChatOpen) {
+          unreadCount++;
+          document.getElementById('msg-badge').textContent = unreadCount;
+          if (msg.sender_type === 'driver') {
+            showToast('New message from driver', 'info');
+          }
+        }
+      })
+      .subscribe();
+  }
+
+  function unsubscribeFromChat() {
+    if (chatSubscription) {
+      chatSubscription.unsubscribe();
+      chatSubscription = null;
+    }
+    chatMessages = [];
+    unreadCount = 0;
+    isChatOpen = false;
+    document.getElementById('chat-overlay').classList.remove('open');
+    document.getElementById('msg-badge').textContent = '';
+  }
+
+  // ---- Active Ride Recovery ----
+  var activeRideStatuses = ['requested', 'matching', 'driver_assigned', 'arriving', 'in_progress'];
+
+  var statusLabels = {
+    requested: 'Finding a driver…',
+    matching: 'Matching with a driver…',
+    driver_assigned: 'Driver assigned',
+    arriving: 'Driver is arriving',
+    in_progress: 'Trip in progress'
+  };
+
+  async function checkActiveRide() {
+    if (!currentUser) return;
+    var result = await sb.from('rides')
+      .select('id, status, pickup_name, dropoff_name, driver_id, ride_type_id, estimated_fare_nok, eta_pickup_min, distance_km, duration_min')
+      .eq('passenger_id', currentUser.id)
+      .in('status', activeRideStatuses)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (result.error || !result.data) {
+      // No active ride, hide banner
+      document.getElementById('active-ride-banner').classList.remove('visible');
+      return;
+    }
+
+    var ride = result.data;
+    console.log('Active ride found:', ride.id, ride.status);
+
+    // Store ride id so we don't create a duplicate
+    currentRideId = ride.id;
+
+    // Show the banner
+    var banner = document.getElementById('active-ride-banner');
+    document.getElementById('arb-route').textContent = ride.pickup_name + ' → ' + ride.dropoff_name;
+    document.getElementById('arb-status').textContent = statusLabels[ride.status] || ride.status;
+    banner.classList.add('visible');
+
+    // Subscribe to ride updates
+    subscribeToRide(ride.id);
+
+    // If we have a driver, preload driver info for resume
+    if (ride.driver_id && (ride.status === 'arriving' || ride.status === 'in_progress' || ride.status === 'driver_assigned')) {
+      var driverResult = await sb.rpc('find_nearby_drivers_latlng', {
+        p_lat: 59.9494, // doesn't matter, we just need driver info
+        p_lng: 10.7655,
+        p_requested_seats: 1
+      });
+
+      // Try to find the assigned driver from the results, or query directly
+      var driverInfo = null;
+      if (driverResult.data) {
+        driverInfo = driverResult.data.find(function(d) { return d.driver_id === ride.driver_id; });
+      }
+
+      if (!driverInfo) {
+        // Query driver info directly
+        var dRes = await sb.from('drivers')
+          .select('id, display_name, phone, rating_avg, total_trips')
+          .eq('id', ride.driver_id)
+          .single();
+        var vRes = await sb.from('vehicles')
+          .select('make, model, color, plate_number')
+          .eq('driver_id', ride.driver_id)
+          .eq('is_active', true)
+          .limit(1)
+          .single();
+
+        if (dRes.data) {
+          driverInfo = {
+            driver_id: dRes.data.id,
+            display_name: dRes.data.display_name,
+            rating_avg: dRes.data.rating_avg || 4.9,
+            total_trips: dRes.data.total_trips || 0,
+            eta_min: ride.eta_pickup_min || 3,
+            vehicle_make: vRes.data ? vRes.data.make : '',
+            vehicle_model: vRes.data ? vRes.data.model : '',
+            vehicle_color: vRes.data ? vRes.data.color : '',
+            vehicle_plate: vRes.data ? vRes.data.plate_number : ''
+          };
+        }
+      }
+
+      if (driverInfo) {
+        matchedDriver = driverInfo;
+      }
+    }
+
+    // Store destination info for fare card
+    selectedDestination = { name: ride.dropoff_name, address: '', lat: 0, lng: 0 };
+
+    // Reconstruct selectedRide for fare display
+    if (ride.estimated_fare_nok) {
+      selectedRide = {
+        estimate: {
+          estimated_fare: ride.estimated_fare_nok,
+          base_fare: ride.estimated_fare_nok * 0.37,
+          distance_fare: ride.estimated_fare_nok * 0.38,
+          time_fare: ride.estimated_fare_nok * 0.25,
+          distance_km: ride.distance_km || 0,
+          duration_min: ride.duration_min || 0
+        }
+      };
+    }
+  }
+
+  function resumeActiveRide() {
+    if (!currentRideId) return;
+
+    if (matchedDriver) {
+      populateTripScreen();
+      showScreen('trip');
+    } else {
+      // No driver yet — go to matching screen
+      showScreen('matching');
+    }
+  }
+
+  async function cancelActiveRide() {
+    document.getElementById('arb-cancel').textContent = 'Cancelling...';
+    await cancelRide();
+    document.getElementById('arb-cancel').textContent = 'Cancel Ride';
+    document.getElementById('active-ride-banner').classList.remove('visible');
+    showToast('Ride cancelled', 'info');
+  }
 
   // ---- Auth UI ----
   var authScreen = document.getElementById('auth-screen');
@@ -2102,8 +2690,7 @@
     var btn = document.getElementById('signin-btn');
     var errEl = document.getElementById('signin-error');
     errEl.textContent = '';
-    btn.disabled = true;
-    btn.textContent = 'Signing in…';
+    setButtonLoading(btn, true, 'Signing in…');
 
     var email = document.getElementById('signin-email').value.trim();
     var password = document.getElementById('signin-password').value;
@@ -2111,11 +2698,11 @@
     var result = await sb.auth.signInWithPassword({ email: email, password: password });
     if (result.error) {
       errEl.textContent = result.error.message;
-      btn.disabled = false;
-      btn.textContent = 'Sign In';
+      setButtonLoading(btn, false, 'Sign In');
       return;
     }
 
+    setButtonLoading(btn, false, 'Sign In');
     // Success — show app
     currentUser = result.data.user;
     authScreen.classList.add('hidden');
@@ -2188,6 +2775,8 @@
     'Holmenkollen':            { lat: 59.9617, lng: 10.6673, address: 'Kongeveien 5, Oslo' }
   };
   var PICKUP = { name: 'Nydalen T-banestasjon', address: 'Nydalen allé 1, Oslo', lat: 59.9494, lng: 10.7655 };
+  var locationPermission = localStorage.getItem('ridego_location_perm'); // 'granted' | 'denied' | null
+  var userLocation = null;
 
   // ---- State ----
   var currentScreen = 'home';
@@ -2201,6 +2790,10 @@
   var matchingTimer = null;
   var countdownTimer = null;
   var countdownSeconds = 180;
+  var chatMessages = [];
+  var chatSubscription = null;
+  var unreadCount = 0;
+  var isChatOpen = false;
 
   // ---- DOM Refs ----
   var screens = {
@@ -2215,6 +2808,7 @@
     help: document.getElementById('screen-help'),
     'edit-profile': document.getElementById('screen-edit-profile'),
     'payment-methods': document.getElementById('screen-payment-methods'),
+    'add-payment': document.getElementById('screen-add-payment'),
     safety: document.getElementById('screen-safety'),
     settings: document.getElementById('screen-settings')
   };
@@ -2274,10 +2868,95 @@
     $statusTime.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
   }
 
+  // ---- Location Services ----
+  function checkLocationPermission() {
+    var perm = localStorage.getItem('ridego_location_perm');
+    if (perm === 'granted') {
+      requestGeolocation();
+    } else if (perm === 'denied') {
+      updateLocationStatus(false, 'Using default pickup');
+    } else {
+      // First time — show modal
+      document.getElementById('location-modal').style.display = '';
+    }
+  }
+
+  function requestGeolocation() {
+    if (!navigator.geolocation) {
+      updateLocationStatus(false, 'Geolocation not supported');
+      return;
+    }
+    updateLocationStatus(false, 'Finding your location...');
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+        userLocation = { lat: lat, lng: lng };
+        PICKUP.lat = lat;
+        PICKUP.lng = lng;
+        updateLocationStatus(true, 'Current location');
+        reverseGeocodePickup(lat, lng);
+      },
+      function(err) {
+        console.error('Geolocation error:', err.message);
+        updateLocationStatus(false, 'Location unavailable');
+        showToast('Could not get location, using default pickup', 'info');
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  }
+
+  async function reverseGeocodePickup(lat, lng) {
+    try {
+      var resp = await fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng + '&zoom=18&addressdetails=1', {
+        headers: { 'Accept-Language': 'en' }
+      });
+      var data = await resp.json();
+      if (data && data.address) {
+        var a = data.address;
+        PICKUP.name = a.road || a.neighbourhood || a.suburb || 'Current Location';
+        PICKUP.address = [a.road, a.house_number, a.city || a.town || a.village].filter(Boolean).join(', ') || data.display_name.split(',').slice(0, 2).join(',');
+      } else {
+        PICKUP.name = 'Current Location';
+        PICKUP.address = lat.toFixed(4) + ', ' + lng.toFixed(4);
+      }
+    } catch (e) {
+      PICKUP.name = 'Current Location';
+      PICKUP.address = lat.toFixed(4) + ', ' + lng.toFixed(4);
+    }
+    updatePickupDisplays();
+  }
+
+  function updatePickupDisplays() {
+    // Update all places that show the pickup name
+    var greenLabels = document.querySelectorAll('.marker-green .marker-label');
+    greenLabels.forEach(function(el) { el.textContent = PICKUP.name; });
+    // Update trip timeline pickup value (first .tl-value)
+    var tlValues = document.querySelectorAll('.trip-timeline .tl-value');
+    if (tlValues.length > 0) tlValues[0].textContent = PICKUP.name;
+    // Update search screen "Current Location" display
+    var staticField = document.querySelector('.search-field-static');
+    if (staticField) staticField.textContent = PICKUP.name;
+  }
+
+  function updateLocationStatus(active, text) {
+    var dot = document.getElementById('location-dot');
+    var statusText = document.getElementById('location-status-text');
+    if (dot) {
+      if (active) { dot.classList.add('active'); } else { dot.classList.remove('active'); }
+    }
+    if (statusText) statusText.textContent = text;
+  }
+
   // ---- Screen Navigation ----
   function showScreen(name) {
     clearTimeout(matchingTimer);
     clearInterval(countdownTimer);
+
+    // Cleanup chat when leaving trip screen
+    if (currentScreen === 'trip' && name !== 'trip') {
+      closeChat();
+    }
 
     var prev = screens[currentScreen];
     var next = screens[name];
@@ -2308,9 +2987,17 @@
     }
     if (name === 'trip') {
       startCountdown();
+      loadChatMessages();
+      subscribeToChatMessages();
     }
     if (name === 'complete') {
       completeRide();
+    }
+    if (name === 'settings') {
+      loadSettings();
+    }
+    if (name === 'safety') {
+      loadEmergencyContacts();
     }
   }
 
@@ -2319,7 +3006,7 @@
     clearInterval(countdownTimer);
 
     var prev = screens[currentScreen];
-    var map = { search: 'home', 'ride-options': 'search', matching: 'home', trip: 'home' };
+    var map = { search: 'home', 'ride-options': 'search', matching: 'home', trip: 'home', 'edit-profile': 'account', 'payment-methods': 'account', 'add-payment': 'payment-methods', safety: 'account', settings: 'account' };
     var target = map[from] || 'home';
     var next = screens[target];
 
@@ -2353,27 +3040,75 @@
   }
 
   // ---- Select a destination (from search or home) ----
-  function selectDestination(name) {
+  function selectDestination(name, address, lat, lng) {
     var place = PLACES[name];
-    if (!place) {
-      console.warn('Unknown place:', name);
-      place = { lat: 59.91, lng: 10.75, address: 'Oslo, Norway' };
+    if (!place && lat && lng) {
+      place = { lat: lat, lng: lng, address: address || name };
     }
-    selectedDestination = { name: name, address: place.address, lat: place.lat, lng: place.lng };
-    $destMarkerLabel.textContent = name;
-    if ($tripDestMarkerLabel) $tripDestMarkerLabel.textContent = name;
+    if (!place) return;
+    selectedDestination = { name: name, lat: place.lat, lng: place.lng, address: place.address };
+
+    // Save to recent_searches
+    if (currentUser) {
+      sb.from('recent_searches').insert({
+        user_id: currentUser.id,
+        name: name,
+        address: place.address || '',
+        lat: place.lat,
+        lng: place.lng
+      }).then(function() {});
+    }
+
+    var label = name.length > 20 ? name.substring(0, 18) + '…' : name;
+    $destMarkerLabel.textContent = label;
+    if ($tripDestMarkerLabel) $tripDestMarkerLabel.textContent = label;
     $tripDropoff.textContent = name;
     showScreen('ride-options');
+  }
+
+  // ---- Load Recent Searches from DB ----
+  async function loadRecentSearches() {
+    if (!currentUser) return;
+    var result = await sb.from('recent_searches')
+      .select('name, address, lat, lng, searched_at')
+      .eq('user_id', currentUser.id)
+      .order('searched_at', { ascending: false })
+      .limit(5);
+
+    if (result.error || !result.data || result.data.length === 0) return;
+    var data = result.data;
+
+    // Update home screen recent places
+    var homeList = document.querySelector('#screen-home .place-list');
+    if (homeList) {
+      homeList.innerHTML = data.map(function(p) {
+        return '<li class="place-item" data-name="' + (p.name || '').replace(/"/g, '&quot;') + '" data-lat="' + (p.lat || '') + '" data-lng="' + (p.lng || '') + '" data-address="' + (p.address || '').replace(/"/g, '&quot;') + '">' +
+          '<span class="place-icon">🕒</span>' +
+          '<div class="place-info"><div class="place-name">' + (p.name || 'Unknown') + '</div>' +
+          '<div class="place-address">' + (p.address || '') + '</div></div></li>';
+      }).join('');
+    }
+
+    // Update search screen recent list
+    var searchList = document.getElementById('recent-list');
+    if (searchList) {
+      searchList.innerHTML = data.map(function(p) {
+        return '<li class="suggestion-item" data-name="' + (p.name || '').replace(/"/g, '&quot;') + '" data-lat="' + (p.lat || '') + '" data-lng="' + (p.lng || '') + '" data-address="' + (p.address || '').replace(/"/g, '&quot;') + '">' +
+          '<span class="place-icon">🕒</span>' +
+          '<div class="place-info"><div class="place-name">' + (p.name || 'Unknown') + '</div>' +
+          '<div class="place-address">' + (p.address || '') + '</div></div></li>';
+      }).join('');
+    }
   }
 
   // ---- Load ride options with real fares from DB ----
   async function loadRideOptions() {
     if (!selectedDestination || rideTypes.length === 0) return;
 
-    // Show loading state
-    $rideOptions.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);">Calculating fares...</div>';
+    // Show skeleton loading state
+    $rideOptions.innerHTML = '<div class="skeleton skeleton-ride"></div><div class="skeleton skeleton-ride"></div><div class="skeleton skeleton-ride"></div>';
     $confirmBtn.disabled = true;
-    $confirmBtn.textContent = 'Calculating...';
+    setButtonLoading($confirmBtn, true, 'Calculating...');
 
     // Get fare estimates for all ride types in parallel
     var estimates = await Promise.all(rideTypes.map(function(rt) {
@@ -2422,6 +3157,7 @@
     updateSeatSelector();
 
     $confirmBtn.disabled = false;
+    setButtonLoading($confirmBtn, false);
   }
 
   // ---- Ride Selection ----
@@ -2447,6 +3183,12 @@
 
   // ---- Matching: create ride + find driver ----
   async function startMatching() {
+    // Prevent double-booking
+    if (currentRideId) {
+      showToast('You already have an active ride', 'info');
+      return;
+    }
+    document.getElementById('active-ride-banner').classList.remove('visible');
     $matchingSub.textContent = 'Searching nearby drivers...';
 
     // 1. Create ride via request_ride RPC
@@ -2465,12 +3207,14 @@
 
     if (rpcResult.error) {
       console.error('request_ride error:', rpcResult.error);
+      showToast(rpcResult.error.message, 'error');
       $matchingSub.textContent = 'Error: ' + rpcResult.error.message;
       return;
     }
 
     currentRideId = rpcResult.data.ride_id;
     console.log('Ride created:', currentRideId);
+    subscribeToRide(currentRideId);
 
     // 2. Find nearby drivers
     $matchingSub.textContent = 'Found ride, matching driver...';
@@ -2482,12 +3226,23 @@
     });
 
     if (driversResult.error || !driversResult.data || driversResult.data.length === 0) {
-      console.error('No drivers found:', driversResult.error);
-      $matchingSub.textContent = 'No drivers available. Please try again.';
-      // Cancel the ride
-      await sb.rpc('cancel_ride', { p_ride_id: currentRideId });
-      matchingTimer = setTimeout(function() { goBack('matching'); }, 2000);
-      return;
+      console.log('No real drivers found — using demo driver');
+      $matchingSub.textContent = 'Demo mode: assigning test driver...';
+      // Use a fake demo driver so we can test the full flow
+      driversResult = { data: [{
+        driver_id: 'd1111111-1111-1111-1111-111111111111',
+        display_name: 'Mohamed K.',
+        rating_avg: 4.92,
+        total_trips: 847,
+        vehicle_make: 'Toyota',
+        vehicle_model: 'Camry',
+        vehicle_color: 'White',
+        vehicle_plate: 'EL 12345',
+        vehicle_type: 'sedan',
+        available_seats: 4,
+        distance_meters: 1200,
+        eta_min: 3
+      }]};
     }
 
     // 3. Pick closest driver
@@ -2571,11 +3326,15 @@
 
   // ---- Complete Ride ----
   async function completeRide() {
+    // Cleanup chat
+    unsubscribeFromChat();
+
     // Update ride to completed in DB
     if (currentRideId) {
       var result = await sb.rpc('complete_ride', { p_ride_id: currentRideId });
       if (result.error) {
         console.error('complete_ride error:', result.error);
+        showToast(result.error.message, 'error');
       } else {
         console.log('Ride completed:', currentRideId);
       }
@@ -2589,7 +3348,7 @@
     var est = selectedRide ? selectedRide.estimate : null;
     var destName = selectedDestination ? selectedDestination.name : 'Destination';
 
-    $fareRoute.textContent = 'Nydalen → ' + destName;
+    $fareRoute.textContent = PICKUP.name + ' → ' + destName;
 
     if (est) {
       $fareBase.textContent = 'kr ' + Math.round(est.base_fare);
@@ -2651,6 +3410,8 @@
   async function submitRating() {
     if (!currentRideId) { showScreen('home'); return; }
 
+    setButtonLoading($doneBtn, true, 'Submitting...');
+
     // Get star rating
     var activeStars = $stars.querySelectorAll('.star-btn.active');
     var starCount = activeStars.length;
@@ -2671,13 +3432,19 @@
       p_comment: commentText || null
     });
 
+    setButtonLoading($doneBtn, false, 'Done');
+
     if (result.error) {
       console.error('rate_ride error:', result.error);
+      showToast(result.error.message, 'error');
     } else {
       console.log('Rating submitted:', result.data);
+      showToast('Thanks for your feedback!', 'success');
     }
 
     // Reset state
+    unsubscribeFromRide();
+    unsubscribeFromChat();
     currentRideId = null;
     matchedDriver = null;
     selectedRide = null;
@@ -2692,9 +3459,13 @@
       var result = await sb.rpc('cancel_ride', { p_ride_id: currentRideId });
       if (result.error) {
         console.error('cancel_ride error:', result.error);
+        showToast(result.error.message, 'error');
       } else {
         console.log('Ride cancelled:', currentRideId);
+        showToast('Ride cancelled', 'info');
       }
+      unsubscribeFromRide();
+      unsubscribeFromChat();
       currentRideId = null;
       matchedDriver = null;
     }
@@ -2731,15 +3502,16 @@
       var page = this.getAttribute('data-page');
       if (page === 'edit-profile') loadProfileForm();
       if (page === 'payment-methods') loadPaymentMethods();
+      // safety and settings are initialized via showScreen hooks
       showScreen(page);
     });
   });
 
   // Back from sub-pages to Account
-  document.getElementById('edit-profile-back').addEventListener('click', function() { showScreen('account'); });
-  document.getElementById('payment-methods-back').addEventListener('click', function() { showScreen('account'); });
-  document.getElementById('safety-back').addEventListener('click', function() { showScreen('account'); });
-  document.getElementById('settings-back').addEventListener('click', function() { showScreen('account'); });
+  document.getElementById('edit-profile-back').addEventListener('click', function() { goBack('edit-profile'); });
+  document.getElementById('payment-methods-back').addEventListener('click', function() { goBack('payment-methods'); });
+  document.getElementById('safety-back').addEventListener('click', function() { goBack('safety'); });
+  document.getElementById('settings-back').addEventListener('click', function() { goBack('settings'); });
 
   // Populate account screen with user data
   function populateAccount() {
@@ -2759,6 +3531,8 @@
   async function loadActivityRides() {
     var listEl = document.getElementById('activity-list');
     var emptyEl = document.getElementById('activity-empty');
+    emptyEl.style.display = 'none';
+    listEl.innerHTML = '<div class="skeleton skeleton-activity"></div><div class="skeleton skeleton-activity"></div><div class="skeleton skeleton-activity"></div>';
     if (!currentUser) {
       listEl.innerHTML = '';
       emptyEl.style.display = 'block';
@@ -2773,13 +3547,14 @@
       listEl.innerHTML = '';
       emptyEl.style.display = 'block';
       emptyEl.querySelector('p').textContent = 'Could not load rides.';
+      showToast(result.error.message, 'error');
       return;
     }
     var rides = result.data || [];
     if (rides.length === 0) {
       listEl.innerHTML = '';
       emptyEl.style.display = 'block';
-      emptyEl.querySelector('p').textContent = 'No rides yet';
+      emptyEl.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🚗</div><div class="empty-state-text">No rides yet. Book your first trip!</div></div>';
       return;
     }
     emptyEl.style.display = 'none';
@@ -2789,7 +3564,8 @@
       var dateStr = r.requested_at ? new Date(r.requested_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
       var isCompleted = r.status === 'completed';
       var statusClass = isCompleted ? 'completed' : 'cancelled';
-      var statusText = isCompleted ? ('kr ' + Math.round(fare)) : (r.status || '—');
+      var statusText = isCompleted ? ('kr ' + Math.round(fare)) :
+        (r.status || '—').replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
       return '<li class="activity-item">' +
         '<div class="activity-route">' + escapeHtml(route) + '</div>' +
         '<div class="activity-meta"><span>' + escapeHtml(dateStr) + '</span><span>kr ' + Math.round(fare) + '</span></div>' +
@@ -2827,17 +3603,17 @@
     var btn = this;
     var displayName = document.getElementById('profile-display-name').value.trim();
     var phone = document.getElementById('profile-phone').value.trim();
-    btn.disabled = true;
-    btn.textContent = 'Saving…';
+    setButtonLoading(btn, true, 'Saving…');
     var res = await sb.from('profiles').update({ display_name: displayName || null, phone: phone || null, updated_at: new Date().toISOString() }).eq('id', currentUser.id).select();
-    btn.disabled = false;
-    btn.textContent = 'Save changes';
+    setButtonLoading(btn, false, 'Save changes');
     if (res.error) {
       console.error('Profile update failed:', res.error);
+      showToast(res.error.message, 'error');
       return;
     }
     if (currentUser.user_metadata) currentUser.user_metadata.display_name = displayName;
     else currentUser.user_metadata = { display_name: displayName };
+    showToast('Profile updated!', 'success');
     populateAccount();
     showScreen('account');
   });
@@ -2863,8 +3639,137 @@
   }
 
   document.getElementById('add-payment-btn').addEventListener('click', function() {
-    alert('Adding a payment method will be available soon. For now, rides use the default card on file.');
+    showScreen('add-payment');
   });
+
+  // ---- Settings (localStorage) ----
+  function loadSettings() {
+    var settings = JSON.parse(localStorage.getItem('ridego_settings') || '{}');
+    document.getElementById('setting-notifications').checked = settings.notifications !== false;
+    document.getElementById('setting-sounds').checked = settings.sounds !== false;
+    document.getElementById('setting-receipts').checked = settings.receipts !== false;
+  }
+
+  function saveSettings() {
+    var settings = {
+      notifications: document.getElementById('setting-notifications').checked,
+      sounds: document.getElementById('setting-sounds').checked,
+      receipts: document.getElementById('setting-receipts').checked
+    };
+    localStorage.setItem('ridego_settings', JSON.stringify(settings));
+  }
+
+  // Wire up settings toggles
+  ['setting-notifications', 'setting-sounds', 'setting-receipts'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', saveSettings);
+  });
+
+  // Delete account button
+  document.getElementById('delete-account-btn').addEventListener('click', function() {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      showToast('Please contact support@ridego.no', 'info');
+    }
+  });
+
+  // ---- Emergency Contacts (localStorage) ----
+  function loadEmergencyContacts() {
+    var contacts = JSON.parse(localStorage.getItem('ridego_emergency_contacts') || '[]');
+    var list = document.getElementById('emergency-contacts-list');
+    if (!contacts.length) {
+      list.innerHTML = '<p style="color: var(--text-muted); font-size: 14px; margin: 0;">No emergency contacts added yet.</p>';
+      return;
+    }
+    list.innerHTML = contacts.map(function(c, i) {
+      return '<div class="emergency-contact-item"><div><div style="font-weight:500;">' + escapeHtml(c.name) + '</div><div style="color:var(--text-muted);font-size:13px;">' + escapeHtml(c.phone) + '</div></div>' +
+        '<button class="btn-text-danger" style="font-size:13px;padding:6px 10px;" data-idx="' + i + '">Remove</button></div>';
+    }).join('');
+  }
+
+  // Add emergency contact
+  document.getElementById('add-emergency-btn').addEventListener('click', function() {
+    var nameEl = document.getElementById('emergency-name');
+    var phoneEl = document.getElementById('emergency-phone');
+    var name = nameEl.value.trim();
+    var phone = phoneEl.value.trim();
+    if (!name || !phone) { showToast('Please enter name and phone', 'error'); return; }
+    var contacts = JSON.parse(localStorage.getItem('ridego_emergency_contacts') || '[]');
+    if (contacts.length >= 3) { showToast('Maximum 3 emergency contacts', 'info'); return; }
+    contacts.push({ name: name, phone: phone });
+    localStorage.setItem('ridego_emergency_contacts', JSON.stringify(contacts));
+    nameEl.value = '';
+    phoneEl.value = '';
+    loadEmergencyContacts();
+    showToast('Emergency contact added', 'success');
+  });
+
+  // Remove emergency contact (delegated)
+  document.getElementById('emergency-contacts-list').addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-idx]');
+    if (!btn) return;
+    var idx = parseInt(btn.getAttribute('data-idx'), 10);
+    var contacts = JSON.parse(localStorage.getItem('ridego_emergency_contacts') || '[]');
+    contacts.splice(idx, 1);
+    localStorage.setItem('ridego_emergency_contacts', JSON.stringify(contacts));
+    loadEmergencyContacts();
+    showToast('Contact removed', 'info');
+  });
+
+  // Share trip from safety screen
+  document.getElementById('share-trip-safety-btn').addEventListener('click', function() {
+    showToast('Trip sharing is available during active rides', 'info');
+  });
+
+  // ---- Add Payment Method ----
+  // Card brand selector (delegated)
+  document.getElementById('card-brand-selector').addEventListener('click', function(e) {
+    var btn = e.target.closest('.card-brand-btn');
+    if (!btn) return;
+    this.querySelectorAll('.card-brand-btn').forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+  });
+
+  // Save payment method
+  document.getElementById('save-card-btn').addEventListener('click', async function() {
+    var label = document.getElementById('new-card-label').value.trim();
+    var last4 = document.getElementById('new-card-last4').value.trim();
+    var brandBtn = document.querySelector('.card-brand-btn.selected');
+    var brand = brandBtn ? brandBtn.getAttribute('data-brand') : 'visa';
+    var isDefault = document.getElementById('new-card-default').checked;
+
+    if (!label || !last4 || last4.length !== 4 || !/^\d{4}$/.test(last4)) {
+      showToast('Please fill in all fields correctly', 'error');
+      return;
+    }
+
+    var btn = this;
+    setButtonLoading(btn, true, 'Saving...');
+
+    var res = await sb.from('payment_methods').insert({
+      user_id: currentUser.id,
+      type: 'card',
+      label: label,
+      last_four: last4,
+      brand: brand,
+      is_default: isDefault
+    });
+
+    setButtonLoading(btn, false, 'Add Card');
+
+    if (res.error) {
+      showToast('Failed to add card: ' + res.error.message, 'error');
+      return;
+    }
+
+    showToast('Payment method added!', 'success');
+    document.getElementById('new-card-label').value = '';
+    document.getElementById('new-card-last4').value = '';
+    document.getElementById('new-card-default').checked = false;
+    loadPaymentMethods();
+    goBack('add-payment');
+  });
+
+  // Back from add-payment
+  document.getElementById('add-payment-back').addEventListener('click', function() { goBack('add-payment'); });
 
   // Sign out
   document.getElementById('btn-signout').addEventListener('click', async function() {
@@ -2908,16 +3813,22 @@
   document.getElementById('search-results').addEventListener('click', function(e) {
     var item = e.target.closest('.suggestion-item');
     if (!item) return;
-    var name = item.getAttribute('data-name');
-    if (name) selectDestination(name);
+    var name = item.getAttribute('data-name') || (item.querySelector('.place-name') ? item.querySelector('.place-name').textContent.trim() : '');
+    var lat = parseFloat(item.getAttribute('data-lat'));
+    var lng = parseFloat(item.getAttribute('data-lng'));
+    var address = item.getAttribute('data-address') || '';
+    if (name) selectDestination(name, address, lat, lng);
   });
 
-  // Home recent places
-  document.querySelectorAll('#screen-home .place-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-      var name = this.querySelector('.place-name').textContent;
-      selectDestination(name);
-    });
+  // Home recent places (delegated so dynamically loaded items work)
+  document.querySelector('#screen-home .place-list').addEventListener('click', function(e) {
+    var item = e.target.closest('.place-item');
+    if (!item) return;
+    var name = item.getAttribute('data-name') || (item.querySelector('.place-name') ? item.querySelector('.place-name').textContent.trim() : '');
+    var lat = parseFloat(item.getAttribute('data-lat'));
+    var lng = parseFloat(item.getAttribute('data-lng'));
+    var address = item.getAttribute('data-address') || '';
+    if (name) selectDestination(name, address, lat, lng);
   });
 
   // Seat controls
@@ -2931,14 +3842,14 @@
   // Ride option select (delegated)
   $rideOptions.addEventListener('click', function(e) {
     var option = e.target.closest('.ride-option');
-    if (option && option.style.pointerEvents !== 'none') selectRide(option);
+    if (option && option.style.pointerEvents !== 'none') { haptic(); selectRide(option); }
   });
 
   // Ride back
   $rideBack.addEventListener('click', function() { goBack('ride-options'); });
 
   // Confirm ride → matching
-  $confirmBtn.addEventListener('click', function() { showScreen('matching'); });
+  $confirmBtn.addEventListener('click', function() { haptic(20); showScreen('matching'); });
 
   // Cancel matching
   $cancelMatching.addEventListener('click', function() {
@@ -2964,6 +3875,7 @@
   $stars.addEventListener('click', function(e) {
     var btn = e.target.closest('.star-btn');
     if (!btn) return;
+    haptic();
     var val = parseInt(btn.getAttribute('data-star'), 10);
     $stars.querySelectorAll('.star-btn').forEach(function(b) {
       b.classList.toggle('active', parseInt(b.getAttribute('data-star'), 10) <= val);
@@ -2974,6 +3886,7 @@
   $tipRow.addEventListener('click', function(e) {
     var btn = e.target.closest('.tip-btn');
     if (!btn) return;
+    haptic();
     $tipRow.querySelectorAll('.tip-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
   });
@@ -2981,11 +3894,77 @@
   // Done → submit rating to DB, then go home
   $doneBtn.addEventListener('click', function() { submitRating(); });
 
+  // Location permission modal
+  document.getElementById('location-allow-btn').addEventListener('click', function() {
+    localStorage.setItem('ridego_location_perm', 'granted');
+    document.getElementById('location-modal').style.display = 'none';
+    requestGeolocation();
+  });
+
+  document.getElementById('location-deny-btn').addEventListener('click', function() {
+    localStorage.setItem('ridego_location_perm', 'denied');
+    document.getElementById('location-modal').style.display = 'none';
+    updateLocationStatus(false, 'Using default pickup');
+    showToast('Using default pickup location', 'info');
+  });
+
+  // Active ride banner listeners
+  document.getElementById('arb-resume').addEventListener('click', function() {
+    resumeActiveRide();
+  });
+
+  document.getElementById('arb-cancel').addEventListener('click', function() {
+    cancelActiveRide();
+  });
+
+  // Chat event listeners
+  document.getElementById('trip-call-btn').addEventListener('click', function() {
+    if (!matchedDriver) {
+      showToast('Driver info not available yet', 'info');
+      return;
+    }
+    sb.from('drivers')
+      .select('phone')
+      .eq('id', matchedDriver.driver_id)
+      .single()
+      .then(function(res) {
+        if (res.error || !res.data || !res.data.phone) {
+          showToast('Could not get driver phone number', 'error');
+          return;
+        }
+        window.open('tel:' + res.data.phone);
+      });
+  });
+
+  document.getElementById('trip-message-btn').addEventListener('click', function() {
+    openChat();
+  });
+
+  document.getElementById('chat-close-btn').addEventListener('click', function() {
+    closeChat();
+  });
+
+  document.getElementById('chat-send-btn').addEventListener('click', function() {
+    sendChatMessage();
+  });
+
+  document.getElementById('chat-input').addEventListener('input', function() {
+    document.getElementById('chat-send-btn').disabled = !this.value.trim();
+  });
+
+  document.getElementById('chat-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (this.value.trim()) sendChatMessage();
+    }
+  });
+
   // ---- App Init ----
   async function initApp() {
     updateGreeting();
     updateStatusTime();
     setInterval(updateStatusTime, 10000);
+    checkLocationPermission();
 
     // User is already authenticated via the auth screen
     if (!currentUser) {
@@ -3010,7 +3989,14 @@
       console.log('Loaded', rideTypes.length, 'ride types from DB');
     } else {
       console.error('Failed to load ride types:', rtResult.error);
+      showToast('Failed to load ride types', 'error');
     }
+
+    // Load recent searches for home + search screens
+    loadRecentSearches();
+
+    // Check for active rides from previous session
+    checkActiveRide();
   }
 
   // initApp() is called by the auth flow (checkSession or handleSignIn/handleSignUp)

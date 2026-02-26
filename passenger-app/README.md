@@ -2,6 +2,28 @@
 
 Oslo-based ride-hailing passenger UI — single-page HTML/CSS/JS app with a Supabase backend.
 
+Deployed at: **https://passenger-app-lovat.vercel.app**
+
+---
+
+## ⚠️ Remove Before Production
+
+The following dev/demo shortcuts are baked into `index.html` and **must be removed** before a real launch:
+
+1. **Demo driver fallback** (~line 3228) — When no real drivers are found nearby, a fake driver (Mohamed K., Toyota Camry) is auto-assigned so you can test the full ride flow. Search for `Demo mode: assigning test driver` in `index.html`.
+
+2. **"Complete Trip (Demo)" button** (~line 1946) — A visible button on the trip screen that instantly completes the ride. Search for `complete-trip-btn`.
+
+3. **Client-side driver matching** — The passenger app itself finds and assigns drivers (calls `find_nearby_drivers` then updates the `rides` table). In production, this should be a server-side process where drivers accept/reject ride requests.
+
+4. **Hardcoded Supabase fallback credentials** (~line 2344–2345) — The anon key is embedded directly in the HTML as a fallback. For production, credentials should only come from `config.js` (or env vars), and the fallback should be removed.
+
+5. **No rate limiting** — Ride requests, auth attempts, and chat messages have no throttling.
+
+6. **Chat is one-sided** — Passenger can send messages, but there's no driver app to respond yet. Messages are stored in `ride_messages` table via Supabase realtime.
+
+---
+
 ## Prerequisites
 
 - **Node.js** (for npm) — use `npm install` and `npm run dev`.
@@ -9,19 +31,11 @@ Oslo-based ride-hailing passenger UI — single-page HTML/CSS/JS app with a Supa
 - **Docker** — required for local Supabase.
 
 ## Install
-Shortcut:
-cd passenger-app
-npm run dev
+
 From the `passenger-app` directory:
 
 ```bash
 npm install
-```
-
-With Bun (if installed):
-
-```bash
-bun install
 ```
 
 ## Development server
@@ -32,14 +46,10 @@ Start Supabase (local Postgres + Studio) and the static HTTP server:
 npm run dev
 ```
 
-With Bun: `bun run dev`.
-
 This runs:
 
-1. **Supabase** — local backend (Docker required). Studio: [http://localhost:54323](http://localhost:54323) (or [http://127.0.0.1:54323](http://127.0.0.1:54323))
+1. **Supabase** — local backend (Docker required). Studio: [http://localhost:54323](http://localhost:54323)
 2. **HTTP server** — app at [http://localhost:3001](http://localhost:3001)
-
-**Open in browser:** [http://localhost:3001](http://localhost:3001)
 
 Stop Supabase when done:
 
@@ -47,40 +57,70 @@ Stop Supabase when done:
 npm run db:stop
 ```
 
-### Port 3000 already in use
+### Port conflicts
 
-If you see `OSError: [Errno 48] Address already in use`, something else is using port 3000. Either:
+If port 3000/3001 is in use:
 
-- **Use another port** — start Supabase first (`npm run db:start`), then in another terminal run:  
-  `npm run serve:alt` (serves on port 3001). Open [http://localhost:3001](http://localhost:3001).
-- **Free port 3000** — find and stop the process, e.g. `lsof -i :3000` then `kill <PID>`.
+- Start Supabase first (`npm run db:start`), then `npm run serve` in another terminal.
+- Or free the port: `lsof -i :3000` then `kill <PID>`.
 
 ## Build
 
-There is no build step. The app is vanilla HTML/CSS/JS; `index.html` is the entry point.
+No build step. The app is vanilla HTML/CSS/JS; `index.html` is the single entry point.
 
-For production:
-
-- Serve the directory as static files (e.g. `index.html`, `config.js`), or
-- Deploy to a static host (e.g. Vercel; see `vercel.json` for rewrites and headers).
-
-Example local “production” serve:
-
-```bash
-python3 -m http.server 3000
-```
-
-(Use your own port if needed.)
+Deploy as static files to any host. Currently deployed on Vercel (see `vercel.json` for rewrites and headers).
 
 ## Database
 
-| Command           | Description                    |
-|-------------------|--------------------------------|
-| `bun run db:start`  | Start Supabase (Docker)        |
-| `bun run db:stop`   | Stop Supabase                  |
-| `bun run db:reset`  | Reset DB and re-run migrations + seed |
-| `bun run db:studio` | Open Supabase Studio (after start) |
+| Command             | Description                              |
+|---------------------|------------------------------------------|
+| `npm run db:start`  | Start Supabase (Docker)                  |
+| `npm run db:stop`   | Stop Supabase                            |
+| `npm run db:reset`  | Reset DB and re-run migrations + seed    |
+| `npm run db:studio` | Open Supabase Studio (after start)       |
+
+### Seed data
+
+`supabase/seed.sql` populates:
+- 3 ride types (Economy, Comfort, XL)
+- 5 drivers around central Oslo (4 online, 1 offline)
+- 5 vehicles
+- Driver locations (needed for `find_nearby_drivers`)
+- 3 promo codes (`WELCOME50`, `OSLO2025`, `FREERIDE`)
 
 ## Config
 
-Copy or create `config.js` to override Supabase URL/key (see repo or env). Defaults are in `index.html` for local/dev.
+`config.js` sets the Supabase URL and anon key:
+
+```js
+window.__RIDEGO_SUPABASE_URL = 'https://your-project.supabase.co';
+window.__RIDEGO_SUPABASE_KEY = 'your-anon-key';
+```
+
+For local dev, these default to the values in `index.html`.
+
+## Architecture
+
+```
+index.html          ← entire app (HTML + CSS + JS, ~3800 lines)
+config.js           ← runtime Supabase config
+vercel.json         ← deployment config (rewrites, headers)
+supabase/
+  migrations/       ← 17 migration files (schema, RLS, functions, realtime)
+  seed.sql          ← test data
+```
+
+### Key Supabase functions (server-side via RPC)
+
+| Function                      | Purpose                                |
+|-------------------------------|----------------------------------------|
+| `request_ride`                | Create a ride, calculate fare estimate |
+| `find_nearby_drivers_latlng`  | Find available drivers within radius   |
+| `estimate_fare_latlng`        | Get fare estimate for a route          |
+| `cancel_ride`                 | Cancel an active ride                  |
+| `complete_ride`               | Mark ride as completed                 |
+| `rate_ride`                   | Submit rating + tip for completed ride |
+
+## Future Plans
+
+See `planforpassengers.md` for the PWA / native app plan (push notifications, offline support, install prompt).
