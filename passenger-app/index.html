@@ -148,6 +148,9 @@
   .road-v3 { left: 80%; top: 0; bottom: 0; width: 3px; }
   .road-h3 { top: 75%; left: 0; right: 40%; height: 3px; }
 
+  /* Google Maps container */
+  .gmap { position: absolute; inset: 0; z-index: 10; }
+
   /* Location Dot */
   .location-dot {
     position: absolute;
@@ -1564,6 +1567,7 @@
   <!-- ==================== SCREEN 1: HOME ==================== -->
   <div class="screen active" id="screen-home">
     <div class="map-bg">
+      <div class="gmap" id="gmap-home"></div>
       <div class="map-road road-h1"></div>
       <div class="map-road road-h2"></div>
       <div class="map-road road-v1"></div>
@@ -1738,6 +1742,7 @@
   <!-- ==================== SCREEN 3: RIDE OPTIONS ==================== -->
   <div class="screen" id="screen-ride-options">
     <div class="map-bg">
+      <div class="gmap" id="gmap-ride"></div>
       <div class="map-road road-h1"></div>
       <div class="map-road road-h2"></div>
       <div class="map-road road-v1"></div>
@@ -1838,6 +1843,7 @@
   <!-- ==================== SCREEN 4: DRIVER MATCHING ==================== -->
   <div class="screen" id="screen-matching">
     <div class="map-bg">
+      <div class="gmap" id="gmap-matching"></div>
       <div class="map-road road-h1"></div>
       <div class="map-road road-h2"></div>
       <div class="map-road road-v1"></div>
@@ -1863,6 +1869,7 @@
   <!-- ==================== SCREEN 5: TRIP CONFIRMED ==================== -->
   <div class="screen" id="screen-trip">
     <div class="map-bg">
+      <div class="gmap" id="gmap-trip"></div>
       <div class="map-road road-h1"></div>
       <div class="map-road road-h2"></div>
       <div class="map-road road-v1"></div>
@@ -2896,6 +2903,7 @@
         PICKUP.lng = lng;
         updateLocationStatus(true, 'Current location');
         reverseGeocodePickup(lat, lng);
+        updateGmapLocation(lat, lng);
       },
       function(err) {
         console.error('Geolocation error:', err.message);
@@ -3054,8 +3062,7 @@
         user_id: currentUser.id,
         name: name,
         address: place.address || '',
-        lat: place.lat,
-        lng: place.lng
+        location: 'POINT(' + place.lng + ' ' + place.lat + ')'
       }).then(function() {});
     }
 
@@ -3070,13 +3077,26 @@
   async function loadRecentSearches() {
     if (!currentUser) return;
     var result = await sb.from('recent_searches')
-      .select('name, address, lat, lng, searched_at')
+      .select('name, address, location, searched_at')
       .eq('user_id', currentUser.id)
       .order('searched_at', { ascending: false })
       .limit(5);
 
     if (result.error || !result.data || result.data.length === 0) return;
-    var data = result.data;
+    // Parse geography POINT from location and enrich with lat/lng
+    var data = result.data.map(function(r) {
+      var lat = 0, lng = 0;
+      // Check PLACES lookup first
+      if (PLACES[r.name]) {
+        lat = PLACES[r.name].lat;
+        lng = PLACES[r.name].lng;
+      } else if (r.location && typeof r.location === 'string') {
+        // Parse "POINT(lng lat)" or "SRID=4326;POINT(lng lat)"
+        var m = r.location.match(/POINT\(([-\d.]+)\s+([-\d.]+)\)/i);
+        if (m) { lng = parseFloat(m[1]); lat = parseFloat(m[2]); }
+      }
+      return { name: r.name, address: r.address, lat: lat, lng: lng, searched_at: r.searched_at };
+    });
 
     // Update home screen recent places
     var homeList = document.querySelector('#screen-home .place-list');
@@ -3129,6 +3149,7 @@
   // ---- Load ride options with real fares from DB ----
   async function loadRideOptions() {
     if (!selectedDestination || rideTypes.length === 0) return;
+    cachedRoute = null; // Reset for new destination
 
     // Show skeleton loading state
     $rideOptions.innerHTML = '<div class="skeleton skeleton-ride"></div><div class="skeleton skeleton-ride"></div><div class="skeleton skeleton-ride"></div>';
@@ -3140,6 +3161,14 @@
       PICKUP.lat, PICKUP.lng,
       selectedDestination.lat, selectedDestination.lng
     );
+
+    // Update map polyline with real route data
+    if (_gmapsReady && _gmapInstances.ride && selectedDestination) {
+      _drawPolyline('ride', _gmapInstances.ride,
+        { lat: PICKUP.lat, lng: PICKUP.lng },
+        { lat: selectedDestination.lat, lng: selectedDestination.lng }
+      );
+    }
 
     // 2. Get fare estimates for all ride types, passing real route data if available
     var estimates = await Promise.all(rideTypes.map(function(rt) {
@@ -3838,6 +3867,8 @@
     // Map screen names to nav names
     var navMap = { home: 'home', account: 'account', activity: 'activity', help: 'help' };
     updateNavActive(navMap[name] || '');
+    // Initialize Google Maps for this screen
+    initMapForScreen(name);
   };
 
   // ---- Event Listeners ----
@@ -4006,6 +4037,189 @@
     }
   });
 
+  // ---- Google Maps Integration ----
+  var GOOGLE_MAPS_KEY = window.__RIDEGO_GOOGLE_MAPS_KEY || '';
+  var _gmapsReady = false;
+  var _gmapInstances = {};
+  var _gmapMarkers = {};
+  var _gmapPolylines = {};
+
+  var DARK_MAP_STYLE = [
+    { elementType: 'geometry', stylers: [{ color: '#0D0F14' }] },
+    { elementType: 'labels.text.fill', stylers: [{ color: '#6B7280' }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: '#0D0F14' }] },
+    { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#2E3340' }] },
+    { featureType: 'administrative.land_parcel', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+    { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1A1D26' }] },
+    { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#2E3340' }] },
+    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#242834' }] },
+    { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#2E3340' }] },
+    { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#1A1D26' }] },
+    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0a1628' }] },
+    { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#4a5568' }] }
+  ];
+
+  window.initGoogleMaps = function() {
+    console.log('[Maps] Google Maps API loaded successfully');
+    _gmapsReady = true;
+    initMapForScreen(currentScreen);
+  };
+
+  window.gm_authFailure = function() {
+    console.error('[Maps] Google Maps authentication failed — check API key and billing');
+  };
+
+  function initMapForScreen(screenName) {
+    if (!_gmapsReady) return;
+    console.log('[Maps] Initializing map for screen:', screenName);
+    switch (screenName) {
+      case 'home': initHomeMap(); break;
+      case 'ride-options': initRideMap(); break;
+      case 'matching': initMatchingMap(); break;
+      case 'trip': initTripMap(); break;
+    }
+  }
+
+  function _createMap(containerId, center, zoom) {
+    var el = document.getElementById(containerId);
+    if (!el) return null;
+    return new google.maps.Map(el, {
+      center: center,
+      zoom: zoom || 15,
+      disableDefaultUI: true,
+      zoomControl: false,
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullscreenControl: false,
+      styles: DARK_MAP_STYLE,
+      gestureHandling: 'greedy',
+      backgroundColor: '#0D0F14'
+    });
+  }
+
+  function _circleIcon(color) {
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 8,
+      fillColor: color,
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 3
+    };
+  }
+
+  function initHomeMap() {
+    var pos = { lat: PICKUP.lat, lng: PICKUP.lng };
+    if (_gmapInstances.home) {
+      _gmapInstances.home.setCenter(pos);
+      if (_gmapMarkers.homeLoc) _gmapMarkers.homeLoc.setPosition(pos);
+      console.log('[Maps] Home map updated, center:', pos);
+      return;
+    }
+    var el = document.getElementById('gmap-home');
+    console.log('[Maps] gmap-home element:', el, 'dimensions:', el ? el.offsetWidth + 'x' + el.offsetHeight : 'N/A');
+    var map = _createMap('gmap-home', pos, 15);
+    if (!map) { console.error('[Maps] Failed to create home map'); return; }
+    _gmapInstances.home = map;
+    _gmapMarkers.homeLoc = new google.maps.Marker({ position: pos, map: map, icon: _circleIcon('#3B82F6'), title: 'Your location' });
+    console.log('[Maps] Home map created successfully');
+  }
+
+  function initMatchingMap() {
+    var pos = { lat: PICKUP.lat, lng: PICKUP.lng };
+    if (_gmapInstances.matching) {
+      _gmapInstances.matching.setCenter(pos);
+      if (_gmapMarkers.matchLoc) _gmapMarkers.matchLoc.setPosition(pos);
+      return;
+    }
+    var map = _createMap('gmap-matching', pos, 15);
+    if (!map) return;
+    _gmapInstances.matching = map;
+    _gmapMarkers.matchLoc = new google.maps.Marker({ position: pos, map: map, icon: _circleIcon('#3B82F6'), title: 'Your location' });
+  }
+
+  function _fitBounds(map, p1, p2, bottomPad) {
+    var bounds = new google.maps.LatLngBounds();
+    bounds.extend(p1);
+    bounds.extend(p2);
+    map.fitBounds(bounds, { top: 80, bottom: bottomPad || 300, left: 40, right: 40 });
+  }
+
+  function _drawPolyline(key, map, pickup, dest) {
+    if (_gmapPolylines[key]) _gmapPolylines[key].setMap(null);
+    if (cachedRoute && cachedRoute.polyline && google.maps.geometry) {
+      try {
+        var path = google.maps.geometry.encoding.decodePath(cachedRoute.polyline);
+        _gmapPolylines[key] = new google.maps.Polyline({ path: path, geodesic: true, strokeColor: '#3B82F6', strokeOpacity: 0.8, strokeWeight: 4, map: map });
+        return;
+      } catch (e) { console.warn('Polyline decode failed:', e); }
+    }
+    _gmapPolylines[key] = new google.maps.Polyline({ path: [pickup, dest], geodesic: true, strokeColor: '#3B82F6', strokeOpacity: 0.5, strokeWeight: 3, map: map });
+  }
+
+  function initRideMap() {
+    if (!selectedDestination) return;
+    var pickup = { lat: PICKUP.lat, lng: PICKUP.lng };
+    var dest = { lat: selectedDestination.lat, lng: selectedDestination.lng };
+    if (!_gmapInstances.ride) {
+      var map = _createMap('gmap-ride', pickup, 13);
+      if (!map) return;
+      _gmapInstances.ride = map;
+      _gmapMarkers.ridePickup = new google.maps.Marker({ position: pickup, map: map, icon: _circleIcon('#00D26A'), title: PICKUP.name });
+      _gmapMarkers.rideDest = new google.maps.Marker({ position: dest, map: map, icon: _circleIcon('#FF4757'), title: selectedDestination.name });
+    } else {
+      _gmapMarkers.ridePickup.setPosition(pickup);
+      _gmapMarkers.rideDest.setPosition(dest);
+      _gmapMarkers.rideDest.setTitle(selectedDestination.name);
+    }
+    _fitBounds(_gmapInstances.ride, pickup, dest);
+    _drawPolyline('ride', _gmapInstances.ride, pickup, dest);
+  }
+
+  function initTripMap() {
+    if (!selectedDestination) return;
+    var pickup = { lat: PICKUP.lat, lng: PICKUP.lng };
+    var dest = { lat: selectedDestination.lat, lng: selectedDestination.lng };
+    if (!_gmapInstances.trip) {
+      var map = _createMap('gmap-trip', pickup, 13);
+      if (!map) return;
+      _gmapInstances.trip = map;
+      _gmapMarkers.tripPickup = new google.maps.Marker({ position: pickup, map: map, icon: _circleIcon('#00D26A'), title: PICKUP.name });
+      _gmapMarkers.tripDest = new google.maps.Marker({ position: dest, map: map, icon: _circleIcon('#FF4757'), title: selectedDestination.name });
+    } else {
+      _gmapMarkers.tripPickup.setPosition(pickup);
+      _gmapMarkers.tripDest.setPosition(dest);
+      _gmapMarkers.tripDest.setTitle(selectedDestination.name);
+    }
+    _fitBounds(_gmapInstances.trip, pickup, dest);
+    _drawPolyline('trip', _gmapInstances.trip, pickup, dest);
+  }
+
+  function updateGmapLocation(lat, lng) {
+    var pos = { lat: lat, lng: lng };
+    if (_gmapInstances.home) {
+      _gmapInstances.home.setCenter(pos);
+      if (_gmapMarkers.homeLoc) _gmapMarkers.homeLoc.setPosition(pos);
+    }
+    if (_gmapInstances.matching) {
+      _gmapInstances.matching.setCenter(pos);
+      if (_gmapMarkers.matchLoc) _gmapMarkers.matchLoc.setPosition(pos);
+    }
+  }
+
+  // Load Google Maps API dynamically
+  if (GOOGLE_MAPS_KEY) {
+    console.log('[Maps] Loading Google Maps API...');
+    var _gms = document.createElement('script');
+    _gms.src = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_MAPS_KEY + '&callback=initGoogleMaps&libraries=geometry&v=weekly';
+    _gms.async = true;
+    _gms.onerror = function() { console.error('[Maps] Failed to load Google Maps script'); };
+    document.head.appendChild(_gms);
+  } else {
+    console.warn('[Maps] No GOOGLE_MAPS_KEY found in config.js');
+  }
+
   // ---- App Init ----
   async function initApp() {
     updateGreeting();
@@ -4044,6 +4258,9 @@
 
     // Check for active rides from previous session
     checkActiveRide();
+
+    // Initialize Google Maps for home screen
+    initMapForScreen('home');
   }
 
   // initApp() is called by the auth flow (checkSession or handleSignIn/handleSignUp)
