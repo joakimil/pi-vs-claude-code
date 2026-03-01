@@ -1,0 +1,74 @@
+---
+layout: layout
+title: Home
+---
+
+<div class="screen active" id="screen-home">
+  <div class="map-bg">
+    <div class="gmap" id="gmap-home"></div>
+    <div class="map-road road-h1"></div>
+    <div class="map-road road-h2"></div>
+    <div class="map-road road-v1"></div>
+    <div class="map-road road-v2"></div>
+    <div class="map-road road-v3"></div>
+    <div class="map-road road-h3"></div>
+    <div class="location-dot" style="top:38%;left:50%;transform:translate(-50%,-50%)">
+      <div class="ring"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+  <div class="bottom-sheet" style="height:48%;padding-bottom:80px;">
+    <div class="sheet-handle"></div>
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;" id="greeting">Good evening, Alex 👋</h2>
+    <div class="location-status" id="location-status">
+      <div class="location-status-dot" id="location-dot"></div>
+      <span id="location-status-text">Location unavailable</span>
+    </div>
+    <div class="active-ride-banner" id="active-ride-banner">
+      <div class="arb-header">
+        <div class="arb-pulse"></div>
+        <span class="arb-title">Ride in progress</span>
+      </div>
+      <div class="arb-route" id="arb-route">Nydalen → Aker Brygge</div>
+      <div class="arb-status" id="arb-status">Driver is arriving</div>
+      <div class="arb-actions">
+        <button class="btn-primary" id="arb-resume">Resume</button>
+        <button class="btn-outline" id="arb-cancel">Cancel Ride</button>
+      </div>
+    </div>
+    <a href="/search/" class="search-bar mb-16" id="home-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Where to?</span>
+    </a>
+    <div class="chips-row mb-16">
+      <div class="chip"><span class="chip-emoji">🏠</span> Home</div>
+      <div class="chip"><span class="chip-emoji">💼</span> Work</div>
+      <div class="chip"><span class="chip-emoji">✈️</span> Airport</div>
+    </div>
+    <div>
+      <ul class="place-list">
+        <li class="place-item" data-name="Aker Brygge" data-lat="59.9075" data-lng="10.7295" data-address="Brynjulf Bulls plass 6, Oslo">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Aker Brygge</div>
+            <div class="place-address">Brynjulf Bulls plass 6, Oslo</div>
+          </div>
+        </li>
+        <li class="place-item" data-name="Oslo Sentralstasjon" data-lat="59.9111" data-lng="10.7528" data-address="Jernbanetorget 1, Oslo">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Oslo Sentralstasjon</div>
+            <div class="place-address">Jernbanetorget 1, Oslo</div>
+          </div>
+        </li>
+        <li class="place-item" data-name="Grünerløkka" data-lat="59.9225" data-lng="10.7590" data-address="Thorvald Meyers gate, Oslo">
+          <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="place-info">
+            <div class="place-name">Grünerløkka</div>
+            <div class="place-address">Thorvald Meyers gate, Oslo</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

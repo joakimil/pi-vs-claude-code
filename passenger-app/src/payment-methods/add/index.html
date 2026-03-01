@@ -1,0 +1,34 @@
+---
+layout: layout
+title: Add Payment
+---
+
+<div class="screen active subpage" id="screen-add-payment">
+  <div class="page-header">
+    <a href="/payment-methods/" class="back-btn" id="add-payment-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+    <h1>Add Payment</h1>
+  </div>
+  <div class="page-content">
+    <div style="margin-bottom: 20px;">
+      <label class="form-label">Card Brand</label>
+      <div class="card-brand-selector" id="card-brand-selector">
+        <button class="card-brand-btn selected" data-brand="visa">Visa</button>
+        <button class="card-brand-btn" data-brand="mastercard">Mastercard</button>
+        <button class="card-brand-btn" data-brand="amex">Amex</button>
+      </div>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <label class="form-label">Card Label</label>
+      <input type="text" id="new-card-label" class="auth-input" placeholder="e.g. Personal Visa" style="margin-top: 6px;">
+    </div>
+    <div style="margin-bottom: 16px;">
+      <label class="form-label">Last 4 Digits</label>
+      <input type="text" id="new-card-last4" class="auth-input" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="1234" style="margin-top: 6px;">
+    </div>
+    <div style="margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+      <input type="checkbox" id="new-card-default">
+      <label for="new-card-default" style="color: var(--text-secondary); font-size: 14px;">Set as default payment method</label>
+    </div>
+    <button class="btn-primary" style="width: 100%;" id="save-card-btn">Add Card</button>
+  </div>
+</div>

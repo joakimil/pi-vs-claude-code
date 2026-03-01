@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#00D26A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>{% if title %}{{ title }} — {% endif %}RideGo</title>
+<link rel="stylesheet" href="/css/common.css">
+<link rel="manifest" href="/manifest.json">
+</head>
+<body>
+<!-- Auth Screen -->
+<div class="auth-screen" id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">🚕</div>
+    <div class="auth-title">RideGo</div>
+    <div class="auth-subtitle">Sign in to request rides around Oslo</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+    <form class="auth-form" id="form-signin" onsubmit="handleSignIn(event)">
+      <div class="auth-input-group">
+        <label>Email</label>
+        <input class="auth-input" type="email" id="signin-email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="auth-input-group">
+        <label>Password</label>
+        <input class="auth-input" type="password" id="signin-password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <div class="auth-error" id="signin-error"></div>
+      <button class="auth-submit" type="submit" id="signin-btn">Sign In</button>
+    </form>
+    <form class="auth-form hidden" id="form-signup" onsubmit="handleSignUp(event)">
+      <div class="auth-input-group">
+        <label>Name</label>
+        <input class="auth-input" type="text" id="signup-name" placeholder="Your name" required autocomplete="name">
+      </div>
+      <div class="auth-input-group">
+        <label>Email</label>
+        <input class="auth-input" type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="auth-input-group">
+        <label>Password</label>
+        <input class="auth-input" type="password" id="signup-password" placeholder="Min 6 characters" required minlength="6" autocomplete="new-password">
+      </div>
+      <div class="auth-error" id="signup-error"></div>
+      <div class="auth-success" id="signup-success"></div>
+      <button class="auth-submit" type="submit" id="signup-btn">Create Account</button>
+    </form>
+    <div class="auth-footer">Private preview — by invitation only</div>
+  </div>
+</div>
+
+<div class="phone-frame" id="app" style="display:none;">
+  <div class="toast-container" id="toast-container"></div>
+  <div class="status-bar" id="status-bar">
+    <span class="status-bar-time" id="status-time">9:41</span>
+    <div class="status-bar-icons">
+      <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    </div>
+  </div>
+
+  {{ content | safe }}
+
+  <div class="bottom-nav">
+    <a href="/" class="nav-item{% if page.url == '/' or page.url == '/index.html' %} active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="/activity/" class="nav-item{% if page.url == '/activity/' %} active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span class="nav-label">Activity</span>
+    </a>
+    <a href="/account/" class="nav-item{% if page.url == '/account/' %} active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label">Account</span>
+    </a>
+    <a href="/help/" class="nav-item{% if page.url == '/help/' %} active{% endif %}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span class="nav-label">Help</span>
+    </a>
+  </div>
+
+  <div class="location-modal" id="location-modal" style="display:none;">
+    <div class="location-modal-card">
+      <div class="location-modal-icon">📍</div>
+      <h3>Allow "RideGo" to use your location?</h3>
+      <p>We use your location to find your pickup point and show nearby drivers.</p>
+      <button class="btn-primary" style="width:100%;" id="location-allow-btn">While Using the App</button>
+      <button class="btn-outline" style="width:100%;margin-top:10px;" id="location-deny-btn">Don't Allow</button>
+    </div>
+  </div>
+</div>
+
+<script src="/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/js/common.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>

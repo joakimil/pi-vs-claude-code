@@ -13,10 +13,16 @@
     "dev": "npx supabase start && python3 -m http.server 3001",
     "serve": "python3 -m http.server 3001",
     "serve:alt": "python3 -m http.server 3001",
-    "functions:serve": "npx supabase functions serve"
+    "functions:serve": "npx supabase functions serve",
+    "build": "npx eleventy",
+    "dev:eleventy": "npx eleventy --serve"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
     "pg": "^8.18.0",
     "supabase": "^2.15.8"
+  },
+  "dependencies": {
+    "is-extendable": "^1.0.1"
   }
 }

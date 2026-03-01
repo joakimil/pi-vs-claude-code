@@ -1,0 +1,48 @@
+---
+layout: layout
+title: Trip
+---
+
+<div class="screen active" id="screen-trip">
+  <div class="map-bg">
+    <div class="gmap" id="gmap-trip"></div>
+    <div class="map-road road-h1"></div>
+    <div class="map-road road-h2"></div>
+    <div class="route-marker marker-green" style="top:26%;left:28%"><div class="marker-dot"></div><div class="marker-label">Pickup</div></div>
+    <div class="route-marker marker-red" style="top:42%;left:68%"><div class="marker-dot"></div><div class="marker-label" id="trip-dest-marker-label">Drop-off</div></div>
+  </div>
+  <div class="arriving-card">
+    <div class="arriving-dot"></div>
+    <span class="arriving-text" id="arriving-text">Driver on the way</span>
+    <span class="arriving-countdown" id="arriving-countdown">—</span>
+  </div>
+  <div class="bottom-sheet" style="height:54%;">
+    <div class="sheet-handle"></div>
+    <div class="sheet-scroll">
+      <div class="driver-card mb-16">
+        <div class="driver-avatar" id="driver-avatar">—</div>
+        <div class="driver-info">
+          <div class="driver-name" id="driver-name">—</div>
+          <div class="driver-rating" id="driver-rating">—</div>
+          <div class="driver-car" id="driver-car">—</div>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn-outline" id="trip-call-btn">Call</button>
+        <button class="btn-outline" id="trip-message-btn">Message</button>
+      </div>
+      <div class="trip-timeline">
+        <div class="timeline-point">
+          <div class="timeline-connector"><div class="tl-dot tl-dot-green"></div><div class="tl-dashed"></div></div>
+          <div class="timeline-text"><div class="tl-label">PICKUP</div><div class="tl-value" id="trip-pickup">—</div></div>
+        </div>
+        <div class="timeline-point">
+          <div class="timeline-connector"><div class="tl-dot tl-dot-red"></div></div>
+          <div class="timeline-text"><div class="tl-label">DROP-OFF</div><div class="tl-value" id="trip-dropoff">—</div></div>
+        </div>
+      </div>
+      <button class="btn-text-danger" id="cancel-trip" style="width:100%;text-align:center;">Cancel Ride</button>
+      <a href="/complete/" class="btn-primary" id="complete-trip-btn" style="display:block;text-align:center;margin-top:12px;">Complete Trip</a>
+    </div>
+  </div>
+</div>

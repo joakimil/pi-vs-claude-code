@@ -1,0 +1,42 @@
+---
+layout: layout
+title: Trip complete
+---
+
+<div class="screen active trip-complete-screen" id="screen-complete">
+  <div class="complete-header">
+    <div class="complete-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Trip Complete ✓</h2>
+  </div>
+  <div class="fare-card">
+    <div class="fare-route" id="fare-route">— → —</div>
+    <div class="fare-row"><span>Base fare</span><span id="fare-base">—</span></div>
+    <div class="fare-row"><span>Distance</span><span id="fare-dist">—</span></div>
+    <div class="fare-row"><span>Time</span><span id="fare-time">—</span></div>
+    <div class="divider"></div>
+    <div class="fare-row"><span class="fare-total-label">Total</span><span class="fare-total" id="fare-total">—</span></div>
+  </div>
+  <div class="rating-section">
+    <h4>Rate your ride</h4>
+    <div class="stars" id="stars">
+      <button class="star-btn" data-star="1">★</button>
+      <button class="star-btn" data-star="2">★</button>
+      <button class="star-btn" data-star="3">★</button>
+      <button class="star-btn" data-star="4">★</button>
+      <button class="star-btn" data-star="5">★</button>
+    </div>
+  </div>
+  <div class="tip-section">
+    <h4>Add a tip</h4>
+    <div class="tip-row" id="tip-row">
+      <button class="tip-btn active" data-tip="0">No tip</button>
+      <button class="tip-btn" data-tip="10">kr 10</button>
+      <button class="tip-btn" data-tip="20">kr 20</button>
+      <button class="tip-btn" data-tip="30">kr 30</button>
+    </div>
+  </div>
+  <textarea class="comment-box" placeholder="Additional comments..." rows="2"></textarea>
+  <button class="btn-primary" id="done-btn">Done</button>
+</div>

@@ -1,0 +1,35 @@
+---
+layout: layout
+title: Safety
+---
+
+<div class="screen active subpage" id="screen-safety">
+  <div class="page-header">
+    <a href="/account/" class="back-btn" id="safety-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+    <h1>Safety</h1>
+  </div>
+  <div class="page-content">
+    <a href="tel:112" class="emergency-btn">
+      <span style="font-size: 24px;">🚨</span>
+      <div><div style="font-weight: 600; font-size: 16px;">Emergency Call 112</div><div style="font-size: 13px; opacity: 0.8;">Contact emergency services</div></div>
+    </a>
+    <div class="safety-card">
+      <div class="safety-card-title">🛡️ Emergency Contacts</div>
+      <div id="emergency-contacts-list"></div>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <input type="text" id="emergency-name" placeholder="Name" class="auth-input" style="flex: 1; margin: 0;">
+        <input type="tel" id="emergency-phone" placeholder="Phone" class="auth-input" style="flex: 1; margin: 0;">
+        <button class="btn-primary" style="padding: 10px 16px;" id="add-emergency-btn">Add</button>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-card-title">📋 Safety Tips</div>
+      <ul class="safety-tips-list">
+        <li>Always verify your driver's name and car details before getting in</li>
+        <li>Share your trip status with a trusted contact</li>
+        <li>Sit in the back seat when riding alone</li>
+        <li>Trust your instincts — cancel if something feels wrong</li>
+      </ul>
+    </div>
+  </div>
+</div>

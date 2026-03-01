@@ -1,0 +1,27 @@
+---
+layout: layout
+title: Ride options
+---
+
+<div class="screen active" id="screen-ride-options">
+  <div class="map-bg">
+    <div class="gmap" id="gmap-ride"></div>
+    <div class="map-road road-h1"></div>
+    <div class="map-road road-h2"></div>
+    <div class="map-road road-v1"></div>
+    <div class="map-road road-v2"></div>
+    <div class="map-road road-v3"></div>
+    <div class="map-road road-h3"></div>
+    <div class="route-marker marker-green" style="top:26%;left:28%"><div class="marker-dot"></div><div class="marker-label" id="dest-marker-label">Destination</div></div>
+    <div class="route-marker marker-red" style="top:42%;left:68%"><div class="marker-dot"></div><div class="marker-label">Drop-off</div></div>
+  </div>
+  <div class="bottom-sheet" style="height:60%;">
+    <div class="sheet-handle"></div>
+    <div class="sheet-scroll">
+      <div class="ride-options mb-16" id="ride-options"><div class="skeleton skeleton-ride"></div><div class="skeleton skeleton-ride"></div></div>
+      <div class="payment-row" style="border-top:1px solid var(--bg-surface-border);"><span>Payment</span><svg class="payment-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      <button class="btn-primary" id="confirm-ride-btn">Confirm — kr —</button>
+    </div>
+  </div>
+  <a href="/search/" class="back-btn" id="ride-back" style="position:absolute;top:62px;left:20px;z-index:15;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+</div>

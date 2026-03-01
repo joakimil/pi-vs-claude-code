@@ -1,0 +1,42 @@
+---
+layout: layout
+title: Search
+---
+
+<div class="screen active search-screen" id="screen-search">
+  <div class="search-header">
+    <a href="/" class="back-btn" id="search-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </a>
+    <div class="search-inputs">
+      <div class="search-timeline">
+        <div class="search-dot search-dot-green"></div>
+        <div class="search-dash"></div>
+        <div class="search-dot search-dot-red"></div>
+      </div>
+      <div class="search-fields">
+        <div class="search-field-static">Current Location</div>
+        <input class="search-field" id="dest-input" type="text" placeholder="Enter destination" autofocus>
+      </div>
+    </div>
+  </div>
+  <div class="search-results" id="search-results">
+    <div class="search-section-title">Recent</div>
+    <ul class="place-list" id="recent-list"></ul>
+    <div class="search-section-title">Suggestions</div>
+    <ul class="place-list" id="suggestions-list">
+      <li class="place-item suggestion-item" data-name="Aker Brygge" data-lat="59.9075" data-lng="10.7295" data-address="Brynjulf Bulls plass 6, Oslo">
+        <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="place-info"><div class="place-name">Aker Brygge</div><div class="place-address">Brynjulf Bulls plass 6, Oslo</div></div>
+      </li>
+      <li class="place-item suggestion-item" data-name="Oslo Sentralstasjon" data-lat="59.9111" data-lng="10.7528" data-address="Jernbanetorget 1, Oslo">
+        <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="place-info"><div class="place-name">Oslo Sentralstasjon</div><div class="place-address">Jernbanetorget 1, Oslo</div></div>
+      </li>
+      <li class="place-item suggestion-item" data-name="Grünerløkka" data-lat="59.9225" data-lng="10.7590" data-address="Thorvald Meyers gate, Oslo">
+        <div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="place-info"><div class="place-name">Grünerløkka</div><div class="place-address">Thorvald Meyers gate, Oslo</div></div>
+      </li>
+    </ul>
+  </div>
+</div>

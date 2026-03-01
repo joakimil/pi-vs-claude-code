@@ -1,0 +1,40 @@
+---
+layout: layout
+title: Investors
+---
+
+<div class="screen active subpage" id="screen-investors">
+  <div class="page-header">
+    <a href="/account/" class="back-btn" id="investors-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+    <h1>Investors</h1>
+  </div>
+  <div class="page-content">
+    <div class="investors-total-card">
+      <div class="investors-total-label">Total investment</div>
+      <div class="investors-total-amount" id="investors-total-amount">—</div>
+      <div class="investors-total-meta" id="investors-total-meta"></div>
+    </div>
+    <div class="help-section-title">Add investment</div>
+    <form id="investors-form">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" id="investor-name" placeholder="Your name or company" maxlength="200">
+        <label class="form-checkbox-label"><input type="checkbox" id="investor-name-anonymous"> Show as anonymous</label>
+      </div>
+      <div class="form-group">
+        <label>Amount</label>
+        <input type="number" id="investor-amount" placeholder="Amount" min="0" step="0.01">
+        <label class="form-checkbox-label"><input type="checkbox" id="investor-amount-anonymous"> Hide amount</label>
+      </div>
+      <div class="form-group">
+        <label>Contact (optional)</label>
+        <input type="email" id="investor-email" placeholder="Email">
+        <input type="tel" id="investor-phone" placeholder="Phone" style="margin-top: 8px;">
+      </div>
+      <button type="submit" class="btn-primary" id="investors-submit-btn">Submit</button>
+    </form>
+    <div class="help-section-title" style="margin-top: 24px;">Investors</div>
+    <ul class="investors-list" id="investors-list"></ul>
+    <div class="investors-empty" id="investors-empty" style="display:none;">No investments yet.</div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+---
+layout: layout
+title: Settings
+---
+
+<div class="screen active subpage" id="screen-settings">
+  <div class="page-header">
+    <a href="/account/" class="back-btn" id="settings-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+    <h1>Settings</h1>
+  </div>
+  <div class="page-content">
+    <div class="settings-section">
+      <h3 class="settings-section-title">Preferences</h3>
+      <div class="setting-row">
+        <div class="setting-info"><div class="setting-label">Push Notifications</div><div class="setting-desc">Receive ride updates and promotions</div></div>
+        <label class="toggle-switch"><input type="checkbox" id="setting-notifications" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><div class="setting-label">Sound Effects</div><div class="setting-desc">Play sounds for ride events</div></div>
+        <label class="toggle-switch"><input type="checkbox" id="setting-sounds" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><div class="setting-label">Email Receipts</div><div class="setting-desc">Receive ride receipts via email</div></div>
+        <label class="toggle-switch"><input type="checkbox" id="setting-receipts" checked><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3 class="settings-section-title">About</h3>
+      <div class="setting-row"><span class="setting-label">Version</span><span>1.0</span></div>
+      <div class="setting-row"><a href="#" class="setting-label">Terms of Service</a></div>
+      <div class="setting-row"><a href="#" class="setting-label">Privacy Policy</a></div>
+    </div>
+    <button class="btn-danger-outline" id="delete-account-btn">Delete Account</button>
+  </div>
+</div>
